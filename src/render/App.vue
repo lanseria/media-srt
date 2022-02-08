@@ -1,24 +1,51 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" class="logo" />
-  <HelloWorld title="Vite + Electron & Esbuild" />
+  <n-config-provider
+    :theme="theme"
+    :locale="locale"
+    :date-locale="dateLocale"
+    :theme-overrides="themeOverrides"
+  >
+    <n-dialog-provider>
+      <n-notification-provider>
+        <n-message-provider>
+          <Slot />
+        </n-message-provider>
+      </n-notification-provider>
+    </n-dialog-provider>
+  </n-config-provider>
 </template>
 
-<script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+<script lang="ts" setup>
+import { computed } from "vue";
+import {
+  NConfigProvider,
+  NMessageProvider,
+  NNotificationProvider,
+  NDialogProvider,
+  darkTheme,
+  zhCN as locale,
+  dateZhCN as dateLocale,
+} from "naive-ui";
+import { useAppStore } from "./store/modules/app";
+import Slot from "./views/layouts/Slot.vue";
+/**
+ * @type import('naive-ui').GlobalThemeOverrides
+ */
+const themeOverrides = {};
+
+const appStore = useAppStore();
+const theme = computed(() => {
+  return appStore.getTheme === "dark" ? darkTheme : null;
+});
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  height: 100%;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, "\5FAE\8F6F\96C5\9ED1", Arial, sans-serif;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-.logo {
-  width: 400px;
-  border-radius: 1rem;
-  box-shadow: 0 0 #0000, 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 </style>
