@@ -24,7 +24,8 @@ export const useAppStore = defineStore({
       return storage.get("APP_THEME", null);
     },
     getTheme(state): ThemeType {
-      return state.theme ?? "light";
+      // 默认为 黑暗模式
+      return state.theme ?? "dark";
     },
     getThemeText(): string {
       return this.getTheme === "dark" ? "深色" : "浅色";
