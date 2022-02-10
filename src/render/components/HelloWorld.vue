@@ -18,7 +18,7 @@ import { sendMsgToMainProcess } from "@render/api";
 import { useIpc } from "@render/plugins/ipc";
 import { ref } from "vue";
 import { NInput, NButton } from "naive-ui";
-const props = defineProps({
+defineProps({
   title: {
     type: String,
     default: "Vite + Electron & Esbuild",
