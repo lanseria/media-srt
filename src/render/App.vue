@@ -8,7 +8,7 @@
     <n-dialog-provider>
       <n-notification-provider>
         <n-message-provider>
-          <Slot />
+          <layout-slot></layout-slot>
         </n-message-provider>
       </n-notification-provider>
     </n-dialog-provider>
@@ -27,7 +27,7 @@ import {
   dateZhCN as dateLocale,
 } from "naive-ui";
 import { useAppStore } from "./store/modules/app";
-import Slot from "./views/layouts/Slot.vue";
+import LayoutSlot from "./views/layouts/Slot.vue";
 /**
  * @type import('naive-ui').GlobalThemeOverrides
  */

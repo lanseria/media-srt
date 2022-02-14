@@ -9,7 +9,7 @@ const config = {
   npmRebuild: false,
   buildDependenciesFromSource: true,
   electronDownload: {
-    mirror: "https://npm.taobao.org/mirrors/electron/",
+    mirror: "https://cdn.npmmirror.com/binaries/electron/v",
   },
   files: ["dist/main/**/*", "dist/render/**/*"],
   nsis: {

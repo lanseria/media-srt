@@ -1,2 +1,6 @@
-<template>开发中</template>
-<script lang="ts" setup></script>
+<template>
+  <imp-page-container> </imp-page-container>
+</template>
+<script lang="ts" setup>
+import ImpPageContainer from "@render/components/global/ImpPageContainer.vue";
+</script>

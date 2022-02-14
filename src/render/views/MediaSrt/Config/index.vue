@@ -28,16 +28,18 @@ import { serialize } from "@common/utils";
 
 const columns = [
   {
-    title: "ID",
-    key: "id",
-  },
-  {
     title: "SECRET_ID",
     key: "TENCENT_SECRET_ID",
+    render: (row: IConfig) => {
+      return row.TENCENT_SECRET_ID.replace(/[\d+]/g, "*");
+    },
   },
   {
     title: "SECRET_KEY",
     key: "TENCENT_SECRET_KEY",
+    render: (row: IConfig) => {
+      return row.TENCENT_SECRET_KEY.replace(/[\w+]/g, "*");
+    },
   },
   {
     title: "COS_BUCKET",

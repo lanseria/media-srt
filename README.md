@@ -38,3 +38,8 @@ My blog post:
 
 - [极速 DX Vite + Electron + esbuild](https://archergu.me/posts/vite-electron-esbuild)
 - [用装饰器给 Electron 提供一个基础 API 框架](https://archergu.me/posts/electron-decorators)
+
+```.npmrc
+ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/v
+ELECTRON_BUILDER_BINARIES_MIRROR=http://npm.taobao.org/mirrors/electron-builder-binaries/
+```

@@ -10,18 +10,23 @@ process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 async function createWindow() {
   try {
     const win = new BrowserWindow({
-      width: 1000,
+      width: 1200,
+      minWidth: 1200,
       height: 800,
+      minHeight: 800,
       webPreferences: {
         nodeIntegration: true,
         webSecurity: false,
         contextIsolation: false,
-        devTools: isDev,
+        devTools: true,
+        // devTools: false,
       },
-      autoHideMenuBar: !isDev,
+      center: true,
+      autoHideMenuBar: false,
     });
 
-    win.maximize();
+    // win.maximize();
+    win.webContents.openDevTools();
 
     await bootstrap(win.webContents);
 
