@@ -3,7 +3,7 @@
     <n-layout-header class="nav" bordered>
       <n-text tag="div" class="ui-logo" :depth="1" @click="goHome()">
         <img src="@render/assets/logo.png" />
-        <span>i-share-clue</span>
+        <span>Media Srt Tools</span>
       </n-text>
 
       <div></div>

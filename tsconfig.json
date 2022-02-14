@@ -18,7 +18,8 @@
     "paths": {
       "@render/*": ["src/render/*"],
       "@main/*": ["src/main/*"],
-      "@common/*": ["src/common/*"]
+      "@common/*": ["src/common/*"],
+      "@types/*": ["src/types/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

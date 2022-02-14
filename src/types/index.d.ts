@@ -6,6 +6,10 @@ declare interface Fn<T = any, R = T> {
 declare interface PromiseFn<T = any, R = T> {
   (...arg: T[]): Promise<R>;
 }
+declare interface IObj<T = any> {
+  [key: string]: T;
+  [key: number]: T;
+}
 
 declare type RefType<T> = T | null;
 
