@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import { mediaSrtRoute } from "../views/MediaSrt/route";
+import { mediaSrtRoute, mediaSrtStaticRoute } from "../views/MediaSrt/route";
 import Layout from "../views/layouts/index.vue";
 import MediaSrtLayout from "../views/layouts/MediaSrt.vue";
 import Welcome from "../views/Welcome/index.vue";
@@ -21,7 +21,7 @@ export const basicRoutes: RouteRecordRaw[] = [
         name: "媒体字幕",
         redirect: "/media-srt/config",
         component: MediaSrtLayout,
-        children: mediaSrtRoute,
+        children: [...mediaSrtRoute, ...mediaSrtStaticRoute],
       },
     ],
   },

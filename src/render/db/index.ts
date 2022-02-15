@@ -1,5 +1,9 @@
 import Dexie from "dexie";
 import dayjs from "dayjs";
+import {
+  EngineModelKeyType,
+  TransfyCategoryKeyType,
+} from "@render/views/MediaSrt/Task/transfy.enum";
 
 export class MediaSrtDatabase extends Dexie {
   configs!: Dexie.Table<IConfig, number>;
@@ -44,8 +48,8 @@ export interface ITransfy extends ICommon {
   objectName: string;
   recResJsonObjectName: string;
   errorDetail: string;
-  engineModel: string;
-  category: string;
+  engineModel: EngineModelKeyType;
+  category: TransfyCategoryKeyType;
   status: string;
   poster: string;
 }

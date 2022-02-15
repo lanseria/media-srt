@@ -11,13 +11,13 @@ export const mediaSrtRoute: RouteRecordRaw[] = [
     component: () => import("./Config/index.vue"),
   },
   {
-    path: "upload",
-    name: "Upload",
+    path: "task",
+    name: "Task",
     meta: {
-      title: "上传音频",
+      title: "我的任务",
       icon: "icon-upload",
     },
-    component: () => import("./Upload/index.vue"),
+    component: () => import("./Task/index.vue"),
   },
   {
     path: "analysis",
@@ -27,5 +27,17 @@ export const mediaSrtRoute: RouteRecordRaw[] = [
       icon: "icon-analysis",
     },
     component: () => import("./Analysis/index.vue"),
+  },
+];
+
+export const mediaSrtStaticRoute: RouteRecordRaw[] = [
+  {
+    path: "upload",
+    name: "Upload",
+    meta: {
+      title: "上传媒体",
+      icon: "icon-upload",
+    },
+    component: () => import("./Upload/index.vue"),
   },
 ];

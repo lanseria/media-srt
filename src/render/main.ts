@@ -10,7 +10,21 @@ async function bootstrap() {
   const app = createApp(App);
   // Configure store
   setupStore(app);
-
+  // 注册一个全局自定义指令 `v-focus`
+  app.directive("advanceClick", {
+    mounted(el: HTMLElement, binding) {
+      let move = false;
+      el.addEventListener("mousemove", () => {
+        move = true;
+      });
+      el.addEventListener("mousedown", () => {
+        move = false;
+      });
+      el.addEventListener("mouseup", (e) => {
+        move ? e.preventDefault() : binding.value();
+      });
+    },
+  });
   // Configure routing
   setupRouter(app);
 
