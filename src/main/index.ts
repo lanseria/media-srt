@@ -6,10 +6,10 @@ import { bootstrap, destroy } from "./bootstrap";
 const isDev = !app.isPackaged;
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
-
+let mainWindow = null;
 async function createWindow() {
   try {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
       width: 1200,
       minWidth: 1200,
       height: 800,
@@ -26,25 +26,25 @@ async function createWindow() {
     });
 
     // win.maximize();
-    win.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
-    await bootstrap(win.webContents);
+    await bootstrap(mainWindow.webContents);
 
     const URL = isDev
       ? `http://localhost:${process.env.PORT}`
       : `file://${join(app.getAppPath(), "dist/render/index.html")}`;
 
-    win.loadURL(URL);
+    mainWindow.loadURL(URL);
 
     if (isDev) {
-      win.webContents.openDevTools();
+      mainWindow.webContents.openDevTools();
     } else {
-      win.removeMenu();
+      mainWindow.removeMenu();
     }
 
-    win.on("closed", () => {
+    mainWindow.on("closed", () => {
       destroy();
-      win.destroy();
+      mainWindow.destroy();
     });
   } catch (error) {
     console.log(error);
@@ -79,3 +79,5 @@ if (isDev) {
     });
   }
 }
+
+export { mainWindow };

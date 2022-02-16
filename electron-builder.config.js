@@ -11,7 +11,16 @@ const config = {
   electronDownload: {
     mirror: "https://cdn.npmmirror.com/binaries/electron/",
   },
-  files: ["dist/main/**/*", "dist/render/**/*"],
+  files: [
+    {
+      from: "src/to/**/*",
+      to: "dist/main/**/*",
+    },
+    {
+      from: "src/render/**/*",
+      to: "dist/render/**/*",
+    },
+  ],
   nsis: {
     oneClick: false,
     allowElevation: true,

@@ -21,9 +21,9 @@
         <n-form-item label="项目名称：" path="name">
           <n-input placeholder="请输入项目名称" v-model:value="model.name" />
         </n-form-item>
-        <n-form-item label="上传文件：" path="objectName">
+        <n-form-item label="上传文件：" path="poster">
           <transfy-upload-video
-            v-model:objectName="model.objectName"
+            v-model:poster="model.poster"
           ></transfy-upload-video>
         </n-form-item>
         <n-form-item label="语言引擎模型：" path="engineModel">
@@ -67,8 +67,6 @@ const currentStatus = ref<"wait" | "error" | "finish" | "process">("process");
 const engineModelOpts = computed(() => {
   const options = [];
   for (const key in EngineModel) {
-    // if (Object.prototype.hasOwnProperty.call(EngineModel, key)) {
-    // }
     const element = EngineModel[key as EngineModelKeyType];
     options.push({
       label: element,

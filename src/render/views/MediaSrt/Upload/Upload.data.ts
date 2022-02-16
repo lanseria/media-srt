@@ -13,21 +13,23 @@ export class TransfyFormDTO extends CommonDTO {
   }
   engineModel: EngineModelKeyType = "16k_zh_video";
   name: string = "";
-  objectName: string = "";
+  rawPath: string;
+  audioPath: string;
+  poster: string = "";
   category: TransfyCategoryKeyType = "video";
 }
 
 export class TransfyDTO extends CommonDTO implements ITransfy {
+  rawPath: string;
+  audioPath: string;
+  rawData: string;
+  splitData: string;
   errorDetail: string;
-  recResJsonObjectName: string = "";
-  recResJsonUrl: string = "";
   id?: number;
-  url: string = "";
   poster: string = "";
   status: TransfyStatusKeyType = "to_be_identifying";
   updatedAt: number = 0;
   name: string = "";
-  objectName: string = "";
   engineModel: EngineModelKeyType = "16k_zh_video";
   category: TransfyCategoryKeyType = "video";
 }

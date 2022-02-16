@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import {
   EngineModelKeyType,
   TransfyCategoryKeyType,
+  TransfyStatusKeyType,
 } from "@render/views/MediaSrt/Task/transfy.enum";
 
 export class MediaSrtDatabase extends Dexie {
@@ -11,20 +12,26 @@ export class MediaSrtDatabase extends Dexie {
 
   constructor() {
     super("MediaSrtDatabase");
-    this.version(2)
-      .stores({
-        configs:
-          "++id, TENCENT_SECRET_ID, TENCENT_SECRET_KEY, TENCENT_COS_BUCKET, TENCENT_COS_REGION, updatedAt",
-        transfy:
-          "++id, name, objectName, recResJsonObjectName, errorDetail, engineModel, category, status, poster, updatedAt",
-      })
-      .upgrade((tx) => {
-        tx.table("configs")
-          .toCollection()
-          .modify((config) => {
-            config.updatedAt = +dayjs();
-          });
-      });
+    // this.version(2)
+    //   .stores({
+    //     configs:
+    //       "++id, TENCENT_SECRET_ID, TENCENT_SECRET_KEY, TENCENT_COS_BUCKET, TENCENT_COS_REGION, updatedAt",
+    //     transfy:
+    //       "++id, name, objectName, recResJsonObjectName, errorDetail, engineModel, category, status, poster, updatedAt",
+    //   })
+    //   .upgrade((tx) => {
+    //     tx.table("configs")
+    //       .toCollection()
+    //       .modify((config) => {
+    //         config.updatedAt = +dayjs();
+    //       });
+    //   });
+    this.version(4).stores({
+      configs:
+        "++id, updatedAt, TENCENT_SECRET_ID, TENCENT_SECRET_KEY, TENCENT_COS_BUCKET, TENCENT_COS_REGION",
+      transfy:
+        "++id, updatedAt, name, category, engineModel, status, poster, rawPath, audioPath, rawData, splitData, errorDetail",
+    });
   }
 }
 
@@ -45,13 +52,18 @@ export interface IConfig extends ICommon {
 export interface ITransfy extends ICommon {
   id?: number;
   name: string;
-  objectName: string;
-  recResJsonObjectName: string;
-  errorDetail: string;
-  engineModel: EngineModelKeyType;
   category: TransfyCategoryKeyType;
-  status: string;
+  engineModel: EngineModelKeyType;
+  status: TransfyStatusKeyType;
+
   poster: string;
+  rawPath: string;
+  audioPath: string;
+
+  rawData: string;
+  splitData: string;
+
+  errorDetail: string;
 }
 
 export const db = new MediaSrtDatabase();
