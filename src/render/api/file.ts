@@ -1,9 +1,10 @@
 import { EVENTS } from "@common/events";
 import { ipcInstance } from "@render/plugins";
 import { useIpc } from "@render/plugins/ipc";
+import { useFileStore } from "@render/store/modules/file";
 
 const ipc = useIpc();
-
+const fileStore = useFileStore();
 export class FileOperate {
   static instance: any;
   constructor() {
@@ -15,13 +16,17 @@ export class FileOperate {
   }
 
   // electron 打开文件
-  openFileDialog() {
-    ipcInstance.send(EVENTS.OPEN_FILE);
+  openFileDialog(uploadId: string) {
+    fileStore.initUploadMediaData(uploadId);
+    console.log("api-openFileDialog", fileStore.uploadMediaFileDataList);
+    ipcInstance.send(EVENTS.OPEN_FILE, uploadId);
   }
   // 打开文件后的信息
   onOpenFileDialog() {
     ipc.on(EVENTS.REPLY_OPEN_FILE, (data: UploadMediaData) => {
-      console.log(data);
+      console.log("api-onOpenFileDialog", data);
+      fileStore.overrideUploadMediaData(data);
+      console.log("api-onOpenFileDialog", fileStore.uploadMediaFileDataList);
     });
   }
 }

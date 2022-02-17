@@ -3,7 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
-    "strict": false,
+    "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
@@ -13,7 +13,7 @@
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "lib": ["esnext", "dom"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "node"],
     "typeRoots": ["./node_modules/@types/", "./src/types"],
     "paths": {
       "@render/*": ["src/render/*"],

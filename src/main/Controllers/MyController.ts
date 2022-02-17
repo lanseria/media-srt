@@ -2,6 +2,7 @@ import { Controller, IpcInvoke, IpcOn } from "../decorators";
 import { MyService } from "../Services/MyService";
 import { EVENTS } from "@common/events";
 import { FileService } from "@main/Services/FileService";
+import { Ffmpeg } from "@main/utils/ffmpeg";
 
 @Controller()
 export class MyController {
@@ -13,6 +14,7 @@ export class MyController {
   }
   @IpcOn(EVENTS.REPLY_OPEN_FILE)
   public replyOpenFile(uploadMediaData: UploadMediaData) {
+    console.log(uploadMediaData);
     return uploadMediaData;
   }
   // IpcInvoke
@@ -26,35 +28,39 @@ export class MyController {
   }
 
   @IpcInvoke(EVENTS.OPEN_FILE)
-  public async handleOpenFile() {
-    const fileObj = await this.fileService.onOpenFile();
-    if (fileObj.canceled || fileObj.filePaths.length === 0) {
-      return;
-    }
-    // 原始媒体路径
-    const rawPath = fileObj.filePaths[0];
-    // 处理音频路径
-    let audioPath = "";
-    // 封面
-    let poster = "";
-    const mediaInfoStreams = await this.fileService.readMediaProbe(rawPath);
-    console.log(mediaInfoStreams);
-    // 类型
-    const category = this.fileService.audioOrVideo(mediaInfoStreams);
-    console.log(category);
-    if (category === "audio") {
-      audioPath = rawPath;
-      poster = await this.fileService.audioCover(rawPath);
-    }
-    if (category === "video") {
-      poster = await this.fileService.videoCover(rawPath);
-    }
+  public async handleOpenFile(uploadId: string) {
+    try {
+      const fileObj = await this.fileService.onOpenFile();
+      if (fileObj.canceled || fileObj.filePaths.length === 0) {
+        return;
+      }
+      // 原始媒体路径
+      const rawPath = fileObj.filePaths[0];
+      // 处理音频路径
+      let audioPath = "";
+      // 封面
+      let poster = "";
+      const mediaInfoStreams = await Ffmpeg.readMediaProbe(rawPath);
+      // 类型
+      const category = await Ffmpeg.audioOrVideo(mediaInfoStreams);
+      if (category === "audio") {
+        audioPath = rawPath;
+        poster = await Ffmpeg.audioCover(rawPath);
+      }
+      if (category === "video") {
+        audioPath = await Ffmpeg.extractAudioFromVideo(rawPath);
+        poster = await Ffmpeg.videoCover(rawPath);
+      }
 
-    this.replyOpenFile({
-      category,
-      poster,
-      rawPath,
-      audioPath,
-    });
+      this.replyOpenFile({
+        uploadId,
+        category,
+        poster,
+        rawPath,
+        audioPath,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

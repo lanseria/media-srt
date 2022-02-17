@@ -25,6 +25,6 @@ export default defineConfig({
     port: +process.env.PORT,
   },
   optimizeDeps: {
-    include: ["@vueuse/core", "@vicons/ionicons5"],
+    include: ["@vueuse/core", "@vicons/ionicons5", "nanoid"],
   },
 });

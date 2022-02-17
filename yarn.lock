@@ -695,16 +695,6 @@ base64-js@^1.3.1, base64-js@^1.5.1:
   resolved "https://registry.npmmirror.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
   integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
 
-betajs-scoped@~0.0.13:
-  version "0.0.22"
-  resolved "https://registry.npmjs.org/betajs-scoped/-/betajs-scoped-0.0.22.tgz#f4d9550896a9e0648c1326d03ec09423b40512e4"
-  integrity sha512-F4kZsAMNBJ47u51qdQPQwaXx7Q/62CywPbnBVAM2BdebSoeIsP9dZYZ9DOIUpBfQ+Zzs1NczStw5oLFqSE9kxQ==
-
-betajs@~1.0.96:
-  version "1.0.233"
-  resolved "https://registry.npmjs.org/betajs/-/betajs-1.0.233.tgz#bc873bef04c2c904514bae394ff35f081195d79d"
-  integrity sha512-FFi1tUfFl5VPnGO52PG7aDqGd6nyJ+a2KUtdQGrSFU2g1BqWABZDuXKMjjkNEHL/dcpHA6yaRTthiXW5l0fUsQ==
-
 bluebird-lst@^1.0.9:
   version "1.0.9"
   resolved "https://registry.npmmirror.com/bluebird-lst/-/bluebird-lst-1.0.9.tgz#a64a0e4365658b9ab5fe875eb9dfb694189bb41c"
@@ -1202,11 +1192,6 @@ dmg-license@^1.0.9:
     plist "^3.0.4"
     smart-buffer "^4.0.2"
     verror "^1.10.0"
-
-docker-polyfill@~0.0.1:
-  version "0.0.10"
-  resolved "https://registry.npmjs.org/docker-polyfill/-/docker-polyfill-0.0.10.tgz#67c21970f53ce1a7d07cbd53ca908343efeced24"
-  integrity sha512-z+jf5WxEOd636if8dVs5/3J1Z3VM5CAU6eZ4mazpO7D3lx9D5b/c6fcjDxdR35b4XYG6TyqJJ1uP9xzgVKnZIA==
 
 doctypes@^1.1.0:
   version "1.1.0"
@@ -2100,17 +2085,6 @@ joi@^17.6.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-js-ffmpeg@^0.0.35:
-  version "0.0.35"
-  resolved "https://registry.npmjs.org/js-ffmpeg/-/js-ffmpeg-0.0.35.tgz#d0f1deae04562847c8597d77989cc1afc5e2c5ef"
-  integrity sha512-HTXclVNe5BAbV8iKKI/AheZrbplXgw3FxLDs8fpNFin7Ahu39vPN/Fh+h1nKcvYYTUAeomrOaJe/YXBPQZoh+g==
-  dependencies:
-    betajs "~1.0.96"
-    betajs-scoped "~0.0.13"
-    docker-polyfill "~0.0.1"
-    node-getopt "^0.3.2"
-    tmp "0.0.33"
-
 js-stringify@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmmirror.com/js-stringify/-/js-stringify-1.0.2.tgz#1736fddfd9724f28a3682adc6230ae7e4e9679db"
@@ -2338,15 +2312,15 @@ nanoid@^3.2.0:
   resolved "https://registry.npmmirror.com/nanoid/-/nanoid-3.2.0.tgz#62667522da6673971cca916a6d3eff3f415ff80c"
   integrity sha512-fmsZYa9lpn69Ad5eDn7FMcnnSR+8R34W9qJEijxYhTbfOWzr22n1QxCMzXLK+ODyW2973V3Fux959iQoUxzUIA==
 
+nanoid@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.npmmirror.com/nanoid/-/nanoid-3.3.1.tgz#6347a18cac88af88f58af0b3594b723d5e99bb35"
+  integrity sha512-n6Vs/3KGyxPQd6uO0eH4Bv0ojGSUvuLlIHtC3Y0kEO23YRge8H9x1GCzLn28YX0H66pMkxuaeESFq4tKISKwdw==
+
 node-addon-api@^1.6.3:
   version "1.7.2"
   resolved "https://registry.npmmirror.com/node-addon-api/-/node-addon-api-1.7.2.tgz#3df30b95720b53c24e59948b49532b662444f54d"
   integrity sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==
-
-node-getopt@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.npmjs.org/node-getopt/-/node-getopt-0.3.2.tgz#57507cd22f6f69650aa99252304a842f1224e44c"
-  integrity sha512-yqkmYrMbK1wPrfz7mgeYvA4tBperLg9FQ4S3Sau3nSAkpOA0x0zC8nQ1siBwozy1f4SE8vq2n1WKv99r+PCa1Q==
 
 normalize-url@^4.1.0:
   version "4.5.1"
@@ -2377,11 +2351,6 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   integrity sha512-lNaJgI+2Q5URQBkccEKHTQOPaXdUxnZZElQTZY0MFUAuaEqe1E+Nyvgdz/aIyNi6Z9MzO5dv1H8n58/GELp3+w==
   dependencies:
     wrappy "1"
-
-os-tmpdir@~1.0.2:
-  version "1.0.2"
-  resolved "https://registry.npmjs.org/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
-  integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
 
 p-cancelable@^1.0.0:
   version "1.1.0"
@@ -2950,13 +2919,6 @@ tmp-promise@^3.0.2:
   integrity sha512-RwM7MoPojPxsOBYnyd2hy0bxtIlVrihNs9pj5SUvY8Zz1sQcQG2tG1hSr8PDxfgEB8RNKDhqbIlroIarSNDNsQ==
   dependencies:
     tmp "^0.2.0"
-
-tmp@0.0.33:
-  version "0.0.33"
-  resolved "https://registry.npmjs.org/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
-  integrity sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==
-  dependencies:
-    os-tmpdir "~1.0.2"
 
 tmp@^0.2.0:
   version "0.2.1"
