@@ -1,3 +1,6 @@
+const mirror =
+  process.env.ELECTRON_MIRROR ?? "https://npmmirror.com/mirrors/electron/";
+const { version } = require("./package.json");
 /**
  * @type {import('electron-builder').Configuration}
  * @see https://www.electron.build/configuration/configuration
@@ -8,25 +11,17 @@ const config = {
   },
   npmRebuild: false,
   buildDependenciesFromSource: true,
-  electronDownload: {
-    mirror: "https://cdn.npmmirror.com/binaries/electron/",
-  },
-  files: [
-    {
-      from: "src/to/**/*",
-      to: "dist/main/**/*",
-    },
-    {
-      from: "src/render/**/*",
-      to: "dist/render/**/*",
-    },
-  ],
+  files: ["dist/main/**/*", "dist/render/**/*"],
   nsis: {
     oneClick: false,
     allowElevation: true,
     allowToChangeInstallationDirectory: true,
     createDesktopShortcut: true,
     createStartMenuShortcut: true,
+  },
+  electronDownload: {
+    mirror,
+    customDir: `v${version}`,
   },
 };
 

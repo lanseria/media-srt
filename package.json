@@ -1,6 +1,6 @@
 {
   "name": "media-srt",
-  "version": "0.0.1",
+  "version": "16.0.8",
   "description": "Vite + Electron with esbuild, so fast! ⚡",
   "main": "dist/main/index.js",
   "scripts": {

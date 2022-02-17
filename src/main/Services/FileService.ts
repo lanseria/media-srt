@@ -1,4 +1,3 @@
-import { Ffmpeg } from "@main/utils/ffmpeg";
 import { dialog } from "electron";
 import { Injectable } from "../decorators";
 import { mainWindow } from "../index";
@@ -19,7 +18,7 @@ export class FileService {
     //   /\.(MP4|WebM|Ogg|mkv|avi|MOV|ASF|WMV|NAVI|3GP|FLV|F4V|RMVB|HDDVD|rm|rmvb|mp3)$/i;
   }
   onOpenFile() {
-    return dialog.showOpenDialog(mainWindow!, {
+    return dialog.showOpenDialog(mainWindow, {
       title: "打开文件",
       properties: ["openFile", "showHiddenFiles", "createDirectory"],
       message: "打开媒体文件",

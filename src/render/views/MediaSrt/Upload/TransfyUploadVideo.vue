@@ -1,9 +1,13 @@
 <template>
   <n-space vertical>
-    <n-button :disabled="btnDisabled" @click="handleOpenFile()">
+    <n-button
+      :disabled="btnDisabled"
+      :loading="btnDisabled"
+      @click="handleOpenFile()"
+    >
       <template #icon>
         <n-icon>
-          <archive-icon />
+          <cloud-upload-outline-icon />
         </n-icon>
       </template>
       上传媒体</n-button
@@ -13,12 +17,10 @@
 </template>
 <script lang="ts" setup>
 import { nanoid } from "nanoid";
-import { onMounted, ref } from "vue";
-import { NButton, NIcon, NP, NText, NCard, NImage, NSpace } from "naive-ui";
-import { Archive as ArchiveIcon } from "@vicons/ionicons5";
+import { ref } from "vue";
+import { NButton, NIcon, NImage, NSpace } from "naive-ui";
+import { CloudUploadOutline as CloudUploadOutlineIcon } from "@vicons/ionicons5";
 import { FileOperate } from "@render/api/file";
-// import { uploadFileReq } from "/@/api/File";
-// import { CustomRequest } from "naive-ui/lib/upload/src/interface";
 import { useVModel } from "@vueuse/core";
 import { useFileStore } from "@render/store/modules/file";
 

@@ -6,7 +6,7 @@ import { bootstrap, destroy } from "./bootstrap";
 const isDev = !app.isPackaged;
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
-let mainWindow = null;
+let mainWindow: BrowserWindow;
 async function createWindow() {
   try {
     mainWindow = new BrowserWindow({
@@ -18,15 +18,14 @@ async function createWindow() {
         nodeIntegration: true,
         webSecurity: false,
         contextIsolation: false,
-        devTools: true,
-        // devTools: false,
+        devTools: isDev,
       },
       center: true,
       autoHideMenuBar: false,
     });
 
     // win.maximize();
-    mainWindow.webContents.openDevTools();
+    isDev && mainWindow.webContents.openDevTools();
 
     await bootstrap(mainWindow.webContents);
 
