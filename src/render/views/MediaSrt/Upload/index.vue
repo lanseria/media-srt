@@ -59,13 +59,14 @@ import ImpPageContainer from "@render/components/global/ImpPageContainer.vue";
 import { computed, ref } from "vue";
 import { EngineModel, EngineModelKeyType } from "../Task/transfy.enum";
 import { TransfyFormDTO } from "./Upload.data";
+import { SelectMixedOption } from "naive-ui/lib/select/src/interface";
 
 const currentRef = ref<number | undefined>(1);
 
 const model = ref(new TransfyFormDTO());
 const currentStatus = ref<"wait" | "error" | "finish" | "process">("process");
 const engineModelOpts = computed(() => {
-  const options = [];
+  const options: SelectMixedOption[] = [];
   for (const key in EngineModel) {
     const element = EngineModel[key as EngineModelKeyType];
     options.push({

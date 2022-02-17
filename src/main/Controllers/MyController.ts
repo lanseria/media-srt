@@ -4,6 +4,8 @@ import { EVENTS } from "@common/events";
 import { FileService } from "@main/Services/FileService";
 import { Ffmpeg } from "@main/utils/ffmpeg";
 import { imageToBase64 } from "@main/utils/image";
+import * as mockjs from "mockjs";
+import * as path from "path";
 
 @Controller()
 export class MyController {
@@ -33,6 +35,13 @@ export class MyController {
     try {
       const fileObj = await this.fileService.onOpenFile();
       if (fileObj.canceled || fileObj.filePaths.length === 0) {
+        this.replyOpenFile({
+          uploadId,
+          category: "",
+          rawPath: "",
+          audioPath: "",
+          poster: "",
+        });
         return;
       }
       // 原始媒体路径
@@ -45,9 +54,20 @@ export class MyController {
       // 类型
       const category = await Ffmpeg.audioOrVideo(mediaInfoStreams);
       if (category === "audio") {
+        console.log(mediaInfoStreams);
         audioPath = rawPath;
-        poster = await Ffmpeg.audioCover(rawPath);
-        poster = (await imageToBase64(poster)) ?? poster;
+        if (mediaInfoStreams.length === 2) {
+          poster = await Ffmpeg.audioCover(rawPath);
+          poster = (await imageToBase64(poster)) ?? poster;
+        } else {
+          poster = mockjs.Random.image(
+            "200x200",
+            "#894FC4",
+            "#FFF",
+            "png",
+            "No_Cover"
+          );
+        }
       }
       if (category === "video") {
         audioPath = await Ffmpeg.extractAudioFromVideo(rawPath);
@@ -64,6 +84,13 @@ export class MyController {
       });
     } catch (error) {
       console.log(error);
+      this.replyOpenFile({
+        uploadId,
+        category: "",
+        rawPath: "",
+        audioPath: "",
+        poster: "",
+      });
     }
   }
 }
