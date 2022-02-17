@@ -18,15 +18,12 @@ export class FileOperate {
   // electron 打开文件
   openFileDialog(uploadId: string) {
     fileStore.initUploadMediaData(uploadId);
-    console.log("api-openFileDialog", fileStore.uploadMediaFileDataList);
     ipcInstance.send(EVENTS.OPEN_FILE, uploadId);
   }
   // 打开文件后的信息
   onOpenFileDialog() {
     ipc.on(EVENTS.REPLY_OPEN_FILE, (data: UploadMediaData) => {
-      console.log("api-onOpenFileDialog", data);
       fileStore.overrideUploadMediaData(data);
-      console.log("api-onOpenFileDialog", fileStore.uploadMediaFileDataList);
     });
   }
 }

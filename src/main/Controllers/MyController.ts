@@ -3,6 +3,7 @@ import { MyService } from "../Services/MyService";
 import { EVENTS } from "@common/events";
 import { FileService } from "@main/Services/FileService";
 import { Ffmpeg } from "@main/utils/ffmpeg";
+import { imageToBase64 } from "@main/utils/image";
 
 @Controller()
 export class MyController {
@@ -46,10 +47,12 @@ export class MyController {
       if (category === "audio") {
         audioPath = rawPath;
         poster = await Ffmpeg.audioCover(rawPath);
+        poster = (await imageToBase64(poster)) ?? poster;
       }
       if (category === "video") {
         audioPath = await Ffmpeg.extractAudioFromVideo(rawPath);
         poster = await Ffmpeg.videoCover(rawPath);
+        poster = (await imageToBase64(poster)) ?? poster;
       }
 
       this.replyOpenFile({
