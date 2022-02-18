@@ -15,7 +15,7 @@ export function mergeProperties<T>(distObject: T, srcObject: IObj) {
   };
 }
 
-export function serialize(value) {
+export const serialize = (value) => {
   if (typeof value === "function") {
     return value.toString();
   }
@@ -28,7 +28,7 @@ export function serialize(value) {
   }
 
   return value;
-}
+};
 
 export function deserialize(valueNew) {
   if (valueNew.toLowerCase().startsWith("function(")) {

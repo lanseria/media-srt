@@ -1,5 +1,5 @@
 <template>
-  <n-space vertical>
+  <n-space vertical style="width: 300px">
     <n-button
       :disabled="btnDisabled"
       :loading="btnDisabled"
@@ -12,33 +12,63 @@
       </template>
       上传媒体</n-button
     >
-    <n-image width="200" :src="uploadPoster" alt="" />
+    <n-image v-if="processStatus.finished" width="200" :src="poster" alt="" />
+    <template v-else>
+      <n-progress
+        type="line"
+        :percentage="(processStatus.step / processStatus.totalStep) * 100"
+        :height="24"
+        processing
+      >
+      </n-progress>
+      <div>
+        {{ processStatus.step }}/{{ processStatus.totalStep }} -
+        {{ processStatus.msg }}
+      </div>
+    </template>
   </n-space>
 </template>
 <script lang="ts" setup>
 import { nanoid } from "nanoid";
-import { ref } from "vue";
-import { NButton, NIcon, NImage, NSpace } from "naive-ui";
+import { reactive, ref } from "vue";
+import { NButton, NIcon, NImage, NSpace, NProgress } from "naive-ui";
 import { CloudUploadOutline as CloudUploadOutlineIcon } from "@vicons/ionicons5";
 import { FileOperate } from "@render/api/file";
-import { useVModel } from "@vueuse/core";
+import { useVModels } from "@vueuse/core";
 import { useFileStore } from "@render/store/modules/file";
 
 const fileOperate = new FileOperate();
 const props = defineProps({
+  category: {
+    type: String,
+    required: true,
+  },
+  rawPath: {
+    type: String,
+    required: true,
+  },
+  audioPath: {
+    type: String,
+    required: true,
+  },
   poster: {
     type: String,
     required: true,
   },
 });
-const emit = defineEmits(["update:poster"]);
 // store
 const fileStore = useFileStore();
 // let
 let uploadId = nanoid();
 // ref
 const btnDisabled = ref(false);
-const uploadPoster = useVModel(props, "poster", emit);
+const processStatus = reactive({
+  finished: true,
+  step: 0,
+  totalStep: 0,
+  msg: "",
+});
+const { category, rawPath, audioPath, poster } = useVModels(props);
 const handleOpenFile = () => {
   uploadId = nanoid();
   btnDisabled.value = true;
@@ -60,14 +90,21 @@ const handleOpenFile = () => {
       // it waits for any returned promised
       after((result) => {
         if (name === "overrideUploadMediaData") {
-          console.log(store.uploadMediaFileDataList);
-          const data = store.uploadMediaFileDataList.find(
-            (m) => m.uploadId === uploadId
-          );
+          const data = store.uploadMediaData;
           if (data) {
-            uploadPoster.value = data.poster;
+            processStatus.finished = data.finished;
+            if (data.finished) {
+              category.value = data.category;
+              rawPath.value = data.rawPath;
+              audioPath.value = data.audioPath;
+              poster.value = data.poster;
+              btnDisabled.value = false;
+            } else {
+              processStatus.msg = data.msg;
+              processStatus.step = data.step;
+              processStatus.totalStep = data.totalStep;
+            }
           }
-          btnDisabled.value = false;
         }
         console.log(
           `Finished "${name}" after ${

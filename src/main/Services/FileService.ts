@@ -1,6 +1,7 @@
 import { dialog } from "electron";
 import { Injectable } from "../decorators";
 import { mainWindow } from "../index";
+
 @Injectable("FileService")
 export class FileService {
   static instance: any;

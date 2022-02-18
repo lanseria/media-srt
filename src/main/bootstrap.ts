@@ -51,6 +51,7 @@ export async function bootstrap(webContents: WebContents) {
         const func = controller[funcName];
         controller[funcName] = async (...args: any[]) => {
           const result = await func.call(controller, ...args);
+          // @ts-ignore
           webContents.send(event, result);
           return result;
         };

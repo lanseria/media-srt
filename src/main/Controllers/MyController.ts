@@ -5,7 +5,7 @@ import { FileService } from "@main/Services/FileService";
 import { Ffmpeg } from "@main/utils/ffmpeg";
 import { imageToBase64 } from "@main/utils/image";
 import * as mockjs from "mockjs";
-import * as path from "path";
+import { UploadMedia } from "@common/dto";
 
 @Controller()
 export class MyController {
@@ -16,9 +16,8 @@ export class MyController {
     return `${this.myService.getDelayTime()} seconds later, the main process replies to your message: ${msg}`;
   }
   @IpcOn(EVENTS.REPLY_OPEN_FILE)
-  public replyOpenFile(uploadMediaData: UploadMediaData) {
-    console.log(uploadMediaData);
-    return uploadMediaData;
+  public replyOpenFile(data: IObj): UploadMediaData {
+    return new UploadMedia(data);
   }
   // IpcInvoke
   @IpcInvoke(EVENTS.SEND_MSG)
@@ -35,14 +34,11 @@ export class MyController {
     try {
       const fileObj = await this.fileService.onOpenFile();
       if (fileObj.canceled || fileObj.filePaths.length === 0) {
+        // 如果取消
         this.replyOpenFile({
           uploadId,
-          category: "",
-          rawPath: "",
-          audioPath: "",
-          poster: "",
+          finished: true,
         });
-        return;
       }
       // 原始媒体路径
       const rawPath = fileObj.filePaths[0];
@@ -50,11 +46,26 @@ export class MyController {
       let audioPath = "";
       // 封面
       let poster = "";
+
+      // 1. 读取文件信息
+      this.replyOpenFile({
+        uploadId,
+        finished: false,
+        step: 1,
+        msg: "读取文件信息",
+      });
       const mediaInfoStreams = await Ffmpeg.readMediaProbe(rawPath);
+
       // 类型
-      const category = await Ffmpeg.audioOrVideo(mediaInfoStreams);
+      const category = Ffmpeg.audioOrVideo(mediaInfoStreams);
       if (category === "audio") {
-        console.log(mediaInfoStreams);
+        // 2. 读取音频封面
+        this.replyOpenFile({
+          uploadId,
+          finished: false,
+          step: 2,
+          msg: "读取音频封面",
+        });
         audioPath = rawPath;
         if (mediaInfoStreams.length === 2) {
           poster = await Ffmpeg.audioCover(rawPath);
@@ -70,7 +81,21 @@ export class MyController {
         }
       }
       if (category === "video") {
+        // 2. 分离视频中的音频
+        this.replyOpenFile({
+          uploadId,
+          finished: false,
+          step: 2,
+          msg: "分离视频中的音频",
+        });
         audioPath = await Ffmpeg.extractAudioFromVideo(rawPath);
+        // 3. 生成视频封面
+        this.replyOpenFile({
+          uploadId,
+          finished: false,
+          step: 3,
+          msg: "生成视频封面",
+        });
         poster = await Ffmpeg.videoCover(rawPath);
         poster = (await imageToBase64(poster)) ?? poster;
       }
@@ -81,15 +106,13 @@ export class MyController {
         poster,
         rawPath,
         audioPath,
+        finished: true,
       });
     } catch (error) {
-      console.log(error);
       this.replyOpenFile({
         uploadId,
-        category: "",
-        rawPath: "",
-        audioPath: "",
-        poster: "",
+        finished: true,
+        msg: error,
       });
     }
   }

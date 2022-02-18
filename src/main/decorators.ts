@@ -1,6 +1,7 @@
 import { EVENTS } from "@common/events";
 
 export function IpcInvoke(event: EVENTS): MethodDecorator {
+  // @ts-ignore
   return (target: any, propertyName: string) => {
     Reflect.defineMetadata(
       "ipc-invoke",
@@ -12,6 +13,7 @@ export function IpcInvoke(event: EVENTS): MethodDecorator {
 }
 
 export function IpcOn(event: EVENTS): MethodDecorator {
+  // @ts-ignore
   return (target: any, propertyName: string) => {
     Reflect.defineMetadata("ipc-on", event.toString(), target, propertyName);
   };
