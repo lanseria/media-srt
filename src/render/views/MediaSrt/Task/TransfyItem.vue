@@ -1,7 +1,6 @@
 <template>
   <div ref="TransfyCardRef">
     <n-card
-      :title="item.name"
       hoverable
       header-style="padding:15px 24px 10px 24px"
       content-style="padding:0 24px 10px 24px"
@@ -16,16 +15,26 @@
               }}</span>
             </div>
           </div>
+          <div class="title-wrap">
+            {{ item.name }}
+          </div>
+          <div class="status-wrap">
+            <div class="category-text">
+              <span class="span-text">
+                {{ TransfyStatus[item.status] }}
+              </span>
+            </div>
+          </div>
         </div>
       </template>
-      <div v-if="!isHovered">{{ TransfyStatus[item.status] }}</div>
       <template #footer>
-        <n-space v-if="isHovered" justify="space-between" style="height: 53px">
+        <n-space v-if="isHovered" justify="space-between" style="height: 30px">
           <n-button
             v-if="
               ['identify_failed', 'to_be_identifying'].includes(item.status)
             "
             type="primary"
+            size="tiny"
             text
             @click="handleRunRec(item)"
           >
@@ -39,6 +48,7 @@
           <n-button
             v-else
             type="primary"
+            size="tiny"
             text
             @click="handleRunProofread(item)"
           >
@@ -50,7 +60,7 @@
             校对字幕
           </n-button>
 
-          <n-button type="error" text @click="handleDel(item)">
+          <n-button type="error" size="tiny" text @click="handleDel(item)">
             <template #icon>
               <n-icon>
                 <TrashOutlineIcon />
@@ -59,12 +69,14 @@
             删除
           </n-button>
         </n-space>
-        <n-time
-          v-else
-          :time="item.updatedAt"
-          format="yyyy-MM-dd hh:mm:ss"
-          unix
-        />
+        <template v-else>
+          更新时间
+          <n-time
+            :time="item.updatedAt / 1000"
+            format="yyyy-MM-dd hh:mm:ss"
+            unix
+          />
+        </template>
       </template>
     </n-card>
   </div>
@@ -80,6 +92,7 @@ import {
 } from "@vicons/ionicons5";
 // import { deleteTransfyReq, runTransfyRecTaskReq } from '/@/api/Admin/TransfyAi/Transfy';
 import { useImpRoute } from "@render/hooks/useRoute";
+import { ITransfy, db } from "@render/db";
 const props = defineProps({
   item: {
     type: Object as PropType<ITransfy>,
@@ -101,7 +114,6 @@ const handleRunRec = (row: ITransfy) => {
     negativeText: "取消",
     onPositiveClick: async () => {
       // const res = await runTransfyRecTaskReq(row.id);
-      console.log(res);
       window.$message.success("执行成功");
     },
     onNegativeClick: () => {},
@@ -114,9 +126,12 @@ const handleDel = (row: ITransfy) => {
     positiveText: "确定",
     negativeText: "不确定",
     onPositiveClick: async () => {
-      const ids = [row.id];
-      // await deleteTransfyReq(ids);
-      window.$message.success("删除成功");
+      try {
+        await db.transfy.delete(row.id!);
+        window.$message.success("删除成功");
+      } catch (error) {
+        window.$message.warning("删除失败");
+      }
     },
     onNegativeClick: () => {},
   });
@@ -126,18 +141,36 @@ const handleDel = (row: ITransfy) => {
 .poster-cover {
   position: relative;
 }
+.title-wrap {
+  position: absolute;
+  opacity: 0.8;
+  background: rgb(0, 0, 0);
+  bottom: 0;
+  left: 0;
+  height: 36px;
+  width: 100%;
+  font-size: 18px;
+  padding-left: 15px;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+}
+.status-wrap,
 .category-wrap {
   position: absolute;
   opacity: 0.8;
   background: rgb(0, 0, 0);
-  top: 0px;
-  left: 0px;
+  top: 0;
   height: 24px;
-  -webkit-box-pack: start;
   justify-content: flex-start;
-  -webkit-box-align: center;
   align-items: center;
-  display: -webkit-flex;
+  display: flex;
+}
+.status-wrap {
+  right: 0;
+}
+.category-wrap {
+  left: 0px;
 }
 .category-text {
   color: rgb(255, 255, 255);
