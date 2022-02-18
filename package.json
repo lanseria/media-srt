@@ -1,6 +1,6 @@
 {
   "name": "media-srt",
-  "version": "16.0.8",
+  "version": "16.0.9",
   "description": "Vite + Electron with esbuild, so fast! ⚡",
   "main": "dist/main/index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.4",
     "store": "^2.0.12",
+    "tencentcloud-sdk-nodejs": "^4.0.291",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12"
   },

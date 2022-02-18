@@ -63,14 +63,13 @@
           <n-button type="error" size="tiny" text @click="handleDel(item)">
             <template #icon>
               <n-icon>
-                <TrashOutlineIcon />
+                <trash-outline-icon />
               </n-icon>
             </template>
             删除
           </n-button>
         </n-space>
         <template v-else>
-          更新时间
           <n-time
             :time="item.updatedAt / 1000"
             format="yyyy-MM-dd hh:mm:ss"

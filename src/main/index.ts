@@ -2,6 +2,8 @@ import "reflect-metadata";
 import { join } from "path";
 import { app, BrowserWindow } from "electron";
 import { bootstrap, destroy } from "./bootstrap";
+import { windowConfig } from "./config";
+import { showLoading, loading } from "./loading";
 
 const isDev = !app.isPackaged;
 
@@ -10,18 +12,14 @@ let mainWindow: BrowserWindow;
 async function createWindow() {
   try {
     mainWindow = new BrowserWindow({
-      width: 1200,
-      minWidth: 1200,
-      height: 800,
-      minHeight: 800,
       webPreferences: {
         nodeIntegration: true,
         webSecurity: false,
         contextIsolation: false,
         devTools: isDev,
       },
-      center: true,
-      autoHideMenuBar: false,
+      show: false, // 先隐藏
+      ...windowConfig,
     });
 
     // win.maximize();
@@ -40,7 +38,11 @@ async function createWindow() {
     } else {
       mainWindow.removeMenu();
     }
-
+    mainWindow.on("ready-to-show", () => {
+      loading.hide();
+      loading.close();
+      mainWindow.show();
+    });
     mainWindow.on("closed", () => {
       destroy();
       mainWindow.destroy();
@@ -62,7 +64,7 @@ app.on("activate", () => {
 });
 
 app.on("ready", async () => {
-  createWindow();
+  showLoading(createWindow);
 });
 
 if (isDev) {
