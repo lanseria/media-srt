@@ -1,8 +1,12 @@
 import { BrowserWindow } from "electron";
-import { windowConfig } from "./config";
+import which from "which";
 // @ts-ignore
 import loadinghtml from "./loading.html";
 export let loading: BrowserWindow;
+export const loadingStatus = {
+  cmdCheck: false,
+  cmdCheckReasons: "",
+};
 export const showLoading = (cb) => {
   loading = new BrowserWindow({
     show: false,
@@ -16,6 +20,24 @@ export const showLoading = (cb) => {
   });
 
   loading.once("show", cb);
+  // loading.webContents.send('check-ffmpeg')
+  Promise.allSettled(["ffprobe", "ffmpeg"].map((cmd) => which(cmd))).then(
+    (results) => {
+      const isPass = results.every((r) => r.status === "fulfilled");
+      if (!isPass) {
+        const reasons = (
+          results.filter(
+            (m) => m.status === "rejected"
+          ) as PromiseRejectedResult[]
+        ).map((m) => m.reason);
+        console.log(reasons);
+        loadingStatus.cmdCheck = false;
+        loadingStatus.cmdCheckReasons = reasons.join("\n");
+      } else {
+        loadingStatus.cmdCheck = true;
+      }
+    }
+  );
   loading.loadFile(loadinghtml);
   loading.show();
 };

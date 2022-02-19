@@ -22,4 +22,10 @@
   <body>
     <div class="body">加载中Loading...</div>
   </body>
+  <script>
+    const { ipcRenderer } = window.require("electron");
+    ipcRenderer.on("check-cmd", (loadingStatus) => {
+      console.log(loadingStatus);
+    });
+  </script>
 </html>

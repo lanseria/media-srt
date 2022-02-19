@@ -1,9 +1,9 @@
 import "reflect-metadata";
-import { join } from "path";
+import { join, resolve } from "path";
 import { app, BrowserWindow } from "electron";
 import { bootstrap, destroy } from "./bootstrap";
 import { windowConfig } from "./config";
-import { showLoading, loading } from "./loading";
+import { showLoading, loading, loadingStatus } from "./loading";
 
 const isDev = !app.isPackaged;
 
@@ -24,7 +24,7 @@ async function createWindow() {
 
     // win.maximize();
     isDev && mainWindow.webContents.openDevTools();
-
+    console.log("await bootstrap");
     await bootstrap(mainWindow.webContents);
 
     const URL = isDev
@@ -39,11 +39,17 @@ async function createWindow() {
       mainWindow.removeMenu();
     }
     mainWindow.on("ready-to-show", () => {
-      loading.hide();
-      loading.close();
-      mainWindow.show();
+      if (loadingStatus.cmdCheck) {
+        loading.hide();
+        loading.close();
+        loading.destroy();
+        mainWindow.show();
+      } else {
+        loading.webContents.send("check-cmd", loadingStatus);
+      }
     });
     mainWindow.on("closed", () => {
+      console.log("mainWindow closed");
       destroy();
       mainWindow.destroy();
     });
@@ -53,18 +59,31 @@ async function createWindow() {
   }
 }
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
-
 app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  if (!mainWindow.isVisible()) {
+    mainWindow.show();
+  }
 });
 
 app.on("ready", async () => {
   showLoading(createWindow);
+});
+
+app.on("before-quit", (e) => {
+  e.preventDefault();
+
+  // if (quitting) {
+  //     return;
+  // }
+
+  // apiServer && apiServer.close();
+
+  // Fix issues #14
+  // forceQuit = true;
+  // quitting = true;
+
+  app.exit(0);
+  process.exit(0);
 });
 
 if (isDev) {
