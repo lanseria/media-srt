@@ -15,17 +15,20 @@
         background-color: rgb(16, 16, 20);
         text-align: center;
         color: #fff;
-        line-height: 100vh;
+        vertical-align: middle;
+        display: table-cell;
+        width: 100vw;
       }
     </style>
   </head>
   <body>
-    <div class="body">加载中Loading...</div>
+    <div class="body" id="data">加载中Loading...</div>
   </body>
   <script>
     const { ipcRenderer } = window.require("electron");
-    ipcRenderer.on("check-cmd", (loadingStatus) => {
+    ipcRenderer.on("check-cmd", (e, loadingStatus) => {
       console.log(loadingStatus);
+      document.getElementById("data").innerText = loadingStatus.cmdCheckReasons;
     });
   </script>
 </html>

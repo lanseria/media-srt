@@ -23,8 +23,7 @@ async function createWindow() {
     });
 
     // win.maximize();
-    isDev && mainWindow.webContents.openDevTools();
-    console.log("await bootstrap");
+    // console.log("await bootstrap");
     await bootstrap(mainWindow.webContents);
 
     const URL = isDev
@@ -34,7 +33,7 @@ async function createWindow() {
     mainWindow.loadURL(URL);
 
     if (isDev) {
-      mainWindow.webContents.openDevTools();
+      // mainWindow.webContents.openDevTools();
     } else {
       mainWindow.removeMenu();
     }
@@ -45,6 +44,8 @@ async function createWindow() {
         loading.destroy();
         mainWindow.show();
       } else {
+        destroy();
+        mainWindow.destroy();
         loading.webContents.send("check-cmd", loadingStatus);
       }
     });
@@ -60,8 +61,11 @@ async function createWindow() {
 }
 
 app.on("activate", () => {
-  if (!mainWindow.isVisible()) {
-    mainWindow.show();
+  if (!mainWindow.isDestroyed()) {
+    console.log(mainWindow.isVisible(), mainWindow.isEnabled());
+    if (!mainWindow.isVisible() && !mainWindow.isEnabled()) {
+      mainWindow.show();
+    }
   }
 });
 
@@ -71,17 +75,6 @@ app.on("ready", async () => {
 
 app.on("before-quit", (e) => {
   e.preventDefault();
-
-  // if (quitting) {
-  //     return;
-  // }
-
-  // apiServer && apiServer.close();
-
-  // Fix issues #14
-  // forceQuit = true;
-  // quitting = true;
-
   app.exit(0);
   process.exit(0);
 });

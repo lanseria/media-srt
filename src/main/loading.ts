@@ -15,8 +15,13 @@ export const showLoading = (cb) => {
     width: 600,
     height: 400,
     center: true,
-    frame: false,
+    frame: true,
     autoHideMenuBar: false,
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false,
+      contextIsolation: false,
+    },
   });
 
   loading.once("show", cb);
@@ -30,8 +35,10 @@ export const showLoading = (cb) => {
             (m) => m.status === "rejected"
           ) as PromiseRejectedResult[]
         ).map((m) => m.reason);
-        console.log(reasons);
+        // console.log(reasons);
         loadingStatus.cmdCheck = false;
+        const HELP_URL = "https://evermeet.cx/ffmpeg/";
+        reasons.push(`you can find at: ${HELP_URL}`);
         loadingStatus.cmdCheckReasons = reasons.join("\n");
       } else {
         loadingStatus.cmdCheck = true;
