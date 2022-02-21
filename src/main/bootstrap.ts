@@ -19,6 +19,7 @@ function factory<T>(constructor: Construct<T>): T {
 }
 
 export async function bootstrap(webContents: WebContents) {
+  // console.log("bootstrap");
   for (const ControllerClass of controllers) {
     const controller = factory(ControllerClass);
     const proto = ControllerClass.prototype;
@@ -30,6 +31,7 @@ export async function bootstrap(webContents: WebContents) {
       let event: string | null = null;
       event = Reflect.getMetadata("ipc-invoke", proto, funcName);
       if (event) {
+        // console.log(event);
         ipcMain.handle(event, async (e, ...args) => {
           try {
             const result = await controller[funcName].call(controller, ...args);

@@ -32,7 +32,8 @@
     "store": "^2.0.12",
     "tencentcloud-sdk-nodejs": "^4.0.291",
     "vue": "^3.2.31",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "which": "^2.0.2"
   },
   "devDependencies": {
     "@anatine/esbuild-decorators": "^0.2.18",
@@ -40,6 +41,7 @@
     "@types/minimist": "^1.2.2",
     "@types/mockjs": "^1.0.6",
     "@types/wait-on": "^5.3.1",
+    "@types/which": "^2.0.1",
     "@vitejs/plugin-vue": "^1.10.2",
     "@vue/compiler-sfc": "^3.2.31",
     "chalk": "^4.1.2",

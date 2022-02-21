@@ -15,10 +15,6 @@ import { RecOpt } from "@main/utils/rec";
 export class MyController {
   constructor(private myService: MyService, private fileService: FileService) {}
   // IpcOn
-  @IpcOn(EVENTS.REPLY_MSG)
-  public replyMsg(msg: string) {
-    return `${this.myService.getDelayTime()} seconds later, the main process replies to your message: ${msg}`;
-  }
   @IpcOn(EVENTS.REPLY_OPEN_FILE)
   public replyOpenFile(data: IObj): UploadMediaData {
     return new UploadMedia(data);
@@ -33,15 +29,6 @@ export class MyController {
   }
 
   // IpcInvoke
-  @IpcInvoke(EVENTS.SEND_MSG)
-  public async handleSendMsg(msg: string): Promise<string> {
-    setTimeout(() => {
-      this.replyMsg(msg);
-    }, this.myService.getDelayTime() * 1000);
-
-    return `The main process received your message: ${msg}`;
-  }
-
   @IpcInvoke(EVENTS.OPEN_FILE)
   public async handleOpenFile(uploadId: string) {
     try {
