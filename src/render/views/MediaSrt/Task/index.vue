@@ -56,13 +56,34 @@ import { db, ITransfy } from "@render/db";
 import { useObservable } from "@vueuse/rxjs";
 import { liveQuery } from "dexie";
 import { Observable } from "rxjs";
+import { onMounted } from "vue";
+import { EVENTS } from "@common/events";
+import { useIpc } from "@render/plugins";
+// use
+const ipc = useIpc();
 const { pushPath } = useImpRoute();
+// ref
 const pagedTable = useObservable<ITransfy[]>(
   liveQuery(() =>
     db.transfy.orderBy("updatedAt").reverse().toArray()
   ) as unknown as Observable<ITransfy[]>
 );
-
+// mounted
+onMounted(() => {
+  ipc.on(EVENTS.REPLY_REC_AUDIO, (data: RecAudioData) => {
+    console.log(data);
+    db.transfy.update(data.id, {
+      rawData: data.rawData,
+      splitData: data.splitData,
+      errorDetail: data.msg,
+      status: data.finished
+        ? "to_be_proofread"
+        : data.step === data.totalStep
+        ? "identify_failed"
+        : "identifying",
+    });
+  });
+});
 const handleAddVideoSrt = () => {
   pushPath("/media-srt/upload");
 };

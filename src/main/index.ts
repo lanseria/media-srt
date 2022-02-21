@@ -39,8 +39,10 @@ async function createWindow() {
       mainWindow.removeMenu();
     }
     mainWindow.on("ready-to-show", () => {
-      loading.hide();
-      loading.close();
+      if (!loading.isDestroyed()) {
+        loading.hide();
+        loading.close();
+      }
       mainWindow.show();
     });
     mainWindow.on("closed", () => {

@@ -70,7 +70,11 @@
           </n-button>
         </n-space>
         <template v-else>
+          <div v-if="item.errorDetail">
+            {{ item.errorDetail }}
+          </div>
           <n-time
+            v-else
             :time="item.updatedAt / 1000"
             format="yyyy-MM-dd hh:mm:ss"
             unix
@@ -89,21 +93,28 @@ import {
   Play as PlayIcon,
   TrashOutline as TrashOutlineIcon,
 } from "@vicons/ionicons5";
-// import { deleteTransfyReq, runTransfyRecTaskReq } from '/@/api/Admin/TransfyAi/Transfy';
 import { useImpRoute } from "@render/hooks/useRoute";
 import { ITransfy, db } from "@render/db";
+import { recAudioProcess } from "@render/api/rec";
+// props
 const props = defineProps({
   item: {
     type: Object as PropType<ITransfy>,
     required: true,
   },
 });
+// hook
 const { pushPath } = useImpRoute();
+// ref
 const TransfyCardRef = ref();
 const isHovered = useElementHover(TransfyCardRef);
 // method
-const handleRunProofread = (row: ITransfy) => {
-  pushPath(`/dashboard/transfy/${row.id}/video-edit`);
+const handleRunProofread = async (row: ITransfy) => {
+  // try {
+  //   await recAudio.recAudioProcess(row);
+  // } catch (err: any) {
+  //   window.$message.warning(err);
+  // }
 };
 const handleRunRec = (row: ITransfy) => {
   window.$dialog.info({
@@ -112,8 +123,12 @@ const handleRunRec = (row: ITransfy) => {
     positiveText: "执行",
     negativeText: "取消",
     onPositiveClick: async () => {
-      // const res = await runTransfyRecTaskReq(row.id);
-      window.$message.success("执行成功");
+      try {
+        await recAudioProcess(row);
+        window.$message.success("执行成功");
+      } catch (err: any) {
+        window.$message.warning(err);
+      }
     },
     onNegativeClick: () => {},
   });
@@ -128,7 +143,7 @@ const handleDel = (row: ITransfy) => {
       try {
         await db.transfy.delete(row.id!);
         window.$message.success("删除成功");
-      } catch (error) {
+      } catch (err) {
         window.$message.warning("删除失败");
       }
     },

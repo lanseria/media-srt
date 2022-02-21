@@ -5,7 +5,11 @@ import { FileService } from "@main/Services/FileService";
 import { Ffmpeg } from "@main/utils/ffmpeg";
 import { imageToBase64 } from "@main/utils/image";
 import * as mockjs from "mockjs";
-import { UploadMedia } from "@common/dto";
+import { RecAudio, UploadMedia } from "@common/dto";
+import { IConfig, ITransfy } from "@render/db";
+import { readFileRetBufedFile } from "@main/utils/cos";
+import { TencentService } from "@main/Services/TencentServie";
+import { RecOpt } from "@main/utils/rec";
 
 @Controller()
 export class MyController {
@@ -19,6 +23,15 @@ export class MyController {
   public replyOpenFile(data: IObj): UploadMediaData {
     return new UploadMedia(data);
   }
+
+  @IpcOn(EVENTS.REPLY_REC_AUDIO)
+  public replyRecAudio(id: number, data: IObj): RecAudioData {
+    const recData = { id, ...data };
+    const newRecAudio = new RecAudio(recData);
+    console.log(newRecAudio);
+    return newRecAudio;
+  }
+
   // IpcInvoke
   @IpcInvoke(EVENTS.SEND_MSG)
   public async handleSendMsg(msg: string): Promise<string> {
@@ -37,7 +50,6 @@ export class MyController {
         // 如果取消
         this.replyOpenFile({
           uploadId,
-          finished: true,
         });
       }
       // 原始媒体路径
@@ -50,7 +62,6 @@ export class MyController {
       // 1. 读取文件信息
       this.replyOpenFile({
         uploadId,
-        finished: false,
         step: 1,
         msg: "读取文件信息",
       });
@@ -62,7 +73,6 @@ export class MyController {
         // 2. 读取音频封面
         this.replyOpenFile({
           uploadId,
-          finished: false,
           step: 2,
           msg: "读取音频封面",
         });
@@ -84,7 +94,6 @@ export class MyController {
         // 2. 分离视频中的音频
         this.replyOpenFile({
           uploadId,
-          finished: false,
           step: 2,
           msg: "分离视频中的音频",
         });
@@ -92,7 +101,6 @@ export class MyController {
         // 3. 生成视频封面
         this.replyOpenFile({
           uploadId,
-          finished: false,
           step: 3,
           msg: "生成视频封面",
         });
@@ -106,12 +114,69 @@ export class MyController {
         poster,
         rawPath,
         audioPath,
-        finished: true,
       });
     } catch (error) {
       this.replyOpenFile({
         uploadId,
+        msg: error,
+      });
+    }
+  }
+
+  @IpcInvoke(EVENTS.REC_AUDIO)
+  public async handleRecAudio({
+    config,
+    transfy,
+  }: {
+    config: IConfig;
+    transfy: ITransfy;
+  }) {
+    console.log(transfy);
+    const reply = (data: IObj) => {
+      this.replyRecAudio(transfy.id!, data);
+    };
+    try {
+      // 1. 接收数据
+      reply({
+        step: 1,
+        msg: "接收数据",
+      });
+      const tencentService = new TencentService(config);
+      // 2. 上传到COS获取临时文件地址
+      reply({
+        step: 2,
+        msg: "上传到COS获取临时文件地址",
+      });
+      const audioBufedFile = await readFileRetBufedFile(transfy.audioPath);
+      const getRes = await tencentService.uploadToCOS(audioBufedFile);
+      const recOpt: RecOpt = {
+        Name: transfy.name,
+        Url: getRes.Url,
+        EngineModelType: transfy.engineModel,
+      };
+      // 3. 识别并返回原始识别数据
+      reply({
+        step: 3,
+        msg: "识别并返回原始识别数据",
+      });
+      const rawData = await tencentService.recAudio(recOpt);
+      // 4. 分割识别数据
+      reply({
+        step: 4,
+        msg: "分割识别数据",
+        rawData,
+      });
+      const splitData = await tencentService.genSliceSubtitles(rawData);
+      // 5. 完成识别任务
+      reply({
+        step: 5,
+        msg: "完成识别任务",
         finished: true,
+        rawData,
+        splitData,
+      });
+    } catch (error: any) {
+      reply({
         msg: error,
       });
     }

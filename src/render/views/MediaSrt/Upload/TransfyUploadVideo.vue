@@ -30,14 +30,17 @@
 </template>
 <script lang="ts" setup>
 import { nanoid } from "nanoid";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { NButton, NIcon, NImage, NSpace, NProgress } from "naive-ui";
 import { CloudUploadOutline as CloudUploadOutlineIcon } from "@vicons/ionicons5";
-import { FileOperate } from "@render/api/file";
 import { useVModels } from "@vueuse/core";
 import { useFileStore } from "@render/store/modules/file";
 
-const fileOperate = new FileOperate();
+import { useIpc } from "@render/plugins/ipc";
+import { EVENTS } from "@common/events";
+
+const ipc = useIpc();
+
 const props = defineProps({
   category: {
     type: String,
@@ -69,10 +72,11 @@ const processStatus = reactive({
   msg: "",
 });
 const { category, rawPath, audioPath, poster } = useVModels(props);
-const handleOpenFile = () => {
-  uploadId = nanoid();
-  btnDisabled.value = true;
-  fileOperate.openFileDialog(uploadId);
+onMounted(() => {
+  console.log("onMounted");
+  ipc.on(EVENTS.REPLY_OPEN_FILE, (data: UploadMediaData) => {
+    fileStore.overrideUploadMediaData(data);
+  });
   fileStore.$onAction(
     ({
       name, // name of the action
@@ -122,5 +126,10 @@ const handleOpenFile = () => {
       });
     }
   );
+});
+const handleOpenFile = () => {
+  uploadId = nanoid();
+  btnDisabled.value = true;
+  fileStore.openFileDialog(uploadId);
 };
 </script>

@@ -61,7 +61,7 @@ const columns = [
               {
                 tertiary: true,
                 size: "small",
-                onClick: () => db.configs.delete(row.id),
+                onClick: () => db.configs.delete(row.id!),
               },
               { default: () => "Delete" }
             ),
@@ -91,7 +91,7 @@ const columns = [
                   disabled: true,
                   type: "primary",
                   size: "small",
-                  onClick: () => db.configs.delete(row.id),
+                  onClick: () => db.configs.delete(row.id!),
                 },
                 { default: () => "Selected" }
               )

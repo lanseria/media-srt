@@ -2,6 +2,7 @@ import { EVENTS } from "@common/events";
 import { IpcResponse } from "@common/types";
 import { getCurrentInstance, onUnmounted, toRaw } from "vue";
 const { ipcRenderer } = window.require("electron");
+import { tryOnUnmounted } from "@vueuse/core";
 
 interface IpcInstance {
   send: <T = any>(target: EVENTS, ...args: any[]) => Promise<IpcResponse<T>>;
@@ -25,13 +26,10 @@ export const ipcInstance: IpcInstance = {
     ipcRenderer.on(event.toString(), (e, ...args) => {
       callback(...args);
     });
-
-    // Use tryOnUnmounted if use @vueuse https://vueuse.org/shared/tryOnUnmounted/
-    if (getCurrentInstance()) {
-      onUnmounted(() => {
-        ipcRenderer.removeAllListeners(event.toString());
-      });
-    }
+    tryOnUnmounted(() => {
+      console.log("tryOnUnmounted");
+      ipcRenderer.removeAllListeners(event.toString());
+    });
   },
 };
 
