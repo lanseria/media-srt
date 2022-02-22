@@ -1,10 +1,10 @@
 import "reflect-metadata";
-import { join, resolve } from "path";
+import { join } from "path";
 import { app, BrowserWindow } from "electron";
 import { bootstrap, destroy } from "./bootstrap";
 import { windowConfig } from "./config";
 import { showLoading, loading, loadingStatus } from "./loading";
-
+import "./express";
 const isDev = !app.isPackaged;
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";

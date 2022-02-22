@@ -13,6 +13,7 @@
       bordered
       show-trigger="bar"
       trigger-style="top: calc(50% - var(--header-height));"
+      :collapsed="collapsed"
     >
       <n-menu
         :value="activeKey"
@@ -37,6 +38,7 @@ import { h, computed } from "vue";
 import { NLayout, NLayoutSider, NMenu, NIcon } from "naive-ui";
 import { mediaSrtRoute } from "../MediaSrt/route";
 import { useImpRoute } from "@render/hooks/useRoute";
+import { useAppStore } from "@render/store/modules/app";
 /**
  * <svg class="icon" aria-hidden="true">
     <use xlink:href="#icon-xxx"></use>
@@ -52,10 +54,15 @@ function renderIcon(icon: string) {
     });
 }
 // use
+const appStore = useAppStore();
 const { pushName, crtName } = useImpRoute();
 // ref
 const activeKey = computed(() => {
   return crtName.value;
+});
+// computed
+const collapsed = computed(() => {
+  return appStore.collapsed;
 });
 // method
 const handleUpdateValue = (key: string) => {

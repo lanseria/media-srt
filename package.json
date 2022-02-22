@@ -23,6 +23,7 @@
     "cos-nodejs-sdk-v5": "^2.11.6",
     "dayjs": "^1.10.7",
     "dexie": "^3.2.0",
+    "express": "^4.17.3",
     "indexeddb-export-import": "^2.1.5",
     "lodash-es": "^4.17.21",
     "mockjs": "^1.1.0",
@@ -34,6 +35,7 @@
     "tencentcloud-sdk-nodejs": "^4.0.291",
     "vue": "^3.2.31",
     "vue-router": "^4.0.12",
+    "wavesurfer.js": "^6.0.2",
     "which": "^2.0.2"
   },
   "devDependencies": {
@@ -42,6 +44,7 @@
     "@types/minimist": "^1.2.2",
     "@types/mockjs": "^1.0.6",
     "@types/wait-on": "^5.3.1",
+    "@types/wavesurfer.js": "^6.0.1",
     "@types/which": "^2.0.1",
     "@vitejs/plugin-vue": "^1.10.2",
     "@vue/compiler-sfc": "^3.2.31",

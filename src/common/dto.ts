@@ -1,3 +1,9 @@
+import { ITransfy } from "@render/db";
+import {
+  EngineModelKeyType,
+  TransfyCategoryKeyType,
+  TransfyStatusKeyType,
+} from "@render/views/MediaSrt/Task/transfy.enum";
 import { mergeProperties } from "./utils";
 
 export class MultipleContactDTO {
@@ -67,10 +73,25 @@ export class RecAudio implements RecAudioData {
 
 export class ImportJson implements ImportData {
   id: string = "";
-  data: IObj = {};
+  data: string = "";
   constructor(obj: Partial<ImportData>) {
     if (obj) {
       Object.assign(this, mergeProperties(this, obj));
     }
   }
+}
+
+export class TransfyDTO extends CommonDTO implements ITransfy {
+  audioPath = "";
+  rawData = "";
+  splitData: SubtitlesItem[] = [];
+  errorDetail = "";
+  id = 0;
+  rawPath: string = "";
+  poster: string = "";
+  status: TransfyStatusKeyType = "to_be_identifying";
+  updatedAt: number = 0;
+  name: string = "";
+  engineModel: EngineModelKeyType = "16k_zh_video";
+  category: TransfyCategoryKeyType = "video";
 }

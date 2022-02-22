@@ -47,7 +47,7 @@ export interface ITransfy extends ICommon {
   audioPath: string;
 
   rawData: string;
-  splitData: string;
+  splitData: SubtitlesItem[];
 
   errorDetail: string;
 }

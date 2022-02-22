@@ -7,6 +7,7 @@ type ThemeType = "light" | "dark";
 interface AppState {
   theme: Nullable<ThemeType>;
   osTheme: Nullable<ThemeType>;
+  collapsed: boolean;
 }
 
 export const useAppStore = defineStore({
@@ -14,6 +15,7 @@ export const useAppStore = defineStore({
   state: (): AppState => ({
     theme: null,
     osTheme: null,
+    collapsed: false,
   }),
   getters: {
     /**
@@ -36,6 +38,9 @@ export const useAppStore = defineStore({
       const osTheme = useOsTheme();
       this.osTheme = osTheme.value;
       this.theme = this.getLocalTheme ?? this.osTheme ?? "light";
+    },
+    setCollapsed(value: boolean) {
+      this.collapsed = value;
     },
     setThemeLight() {
       this.theme = "light";

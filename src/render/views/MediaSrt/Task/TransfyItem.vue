@@ -110,6 +110,7 @@ const TransfyCardRef = ref();
 const isHovered = useElementHover(TransfyCardRef);
 // method
 const handleRunProofread = async (row: ITransfy) => {
+  pushPath(`/media-srt/analysis/${row.id}`);
   // try {
   //   await recAudio.recAudioProcess(row);
   // } catch (err: any) {

@@ -19,15 +19,15 @@ export const mediaSrtRoute: RouteRecordRaw[] = [
     },
     component: () => import("./Task/index.vue"),
   },
-  {
-    path: "analysis",
-    name: "Analysis",
-    meta: {
-      title: "分析字幕",
-      icon: "icon-analysis",
-    },
-    component: () => import("./Analysis/index.vue"),
-  },
+  // {
+  //   path: "analysis",
+  //   name: "Analysis",
+  //   meta: {
+  //     title: "分析字幕",
+  //     icon: "icon-analysis",
+  //   },
+  //   component: () => import("./Analysis/index.vue"),
+  // },
 ];
 
 export const mediaSrtStaticRoute: RouteRecordRaw[] = [
@@ -39,5 +39,14 @@ export const mediaSrtStaticRoute: RouteRecordRaw[] = [
       icon: "icon-upload",
     },
     component: () => import("./Upload/index.vue"),
+  },
+  {
+    path: "analysis/:id",
+    name: "Analysis",
+    meta: {
+      title: "分析字幕",
+      icon: "icon-analysis",
+    },
+    component: () => import("./Analysis/index.vue"),
   },
 ];
