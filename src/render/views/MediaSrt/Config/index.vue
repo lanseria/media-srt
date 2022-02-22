@@ -2,7 +2,34 @@
   <imp-page-container>
     <div class="data-table-header">
       <n-space align="center">
-        <n-button type="primary" @click="handleAdd()">新增</n-button>
+        <n-button type="primary" @click="handleAdd()">
+          <template #icon>
+            <n-icon>
+              <add-outline-icon />
+            </n-icon>
+          </template>
+          新增</n-button
+        >
+        <n-button @click="handleImport()">
+          <template #icon>
+            <n-icon>
+              <arrow-down-circle-outline-icon />
+            </n-icon>
+          </template>
+          导入</n-button
+        >
+        <n-button
+          @click="handleExport()"
+          :loading="saveLoading"
+          :disabled="saveLoading"
+        >
+          <template #icon>
+            <n-icon>
+              <arrow-up-circle-outline-icon />
+            </n-icon>
+          </template>
+          导出</n-button
+        >
       </n-space>
     </div>
     <n-data-table
@@ -15,8 +42,13 @@
   <config-modal ref="ConfigModalRef"></config-modal>
 </template>
 <script lang="ts" setup>
-import { NSpace, NButton, NDataTable } from "naive-ui";
-import { ref, h } from "vue";
+import {
+  AddOutline as AddOutlineIcon,
+  ArrowDownCircleOutline as ArrowDownCircleOutlineIcon,
+  ArrowUpCircleOutline as ArrowUpCircleOutlineIcon,
+} from "@vicons/ionicons5";
+import { NSpace, NButton, NDataTable, NIcon } from "naive-ui";
+import { ref, h, onMounted, computed } from "vue";
 import { Observable } from "rxjs";
 import { useObservable } from "@vueuse/rxjs";
 import { liveQuery } from "dexie";
@@ -25,7 +57,14 @@ import ConfigModal from "./ConfigModal.vue";
 import dayjs from "dayjs";
 import ImpPageContainer from "@render/components/global/ImpPageContainer.vue";
 import { serialize } from "@common/utils";
-
+import IDBExportImport from "indexeddb-export-import";
+import { useFileStore } from "@render/store/modules/file";
+import { useIpc } from "@render/plugins";
+import { EVENTS } from "@common/events";
+import { nanoid } from "nanoid";
+// useIpc
+const ipc = useIpc();
+const fileStore = useFileStore();
 const columns = [
   {
     title: "SECRET_ID",
@@ -110,9 +149,51 @@ const data = useObservable<IConfig[]>(
 );
 // refs
 const ConfigModalRef = ref();
+// computed
+const saveLoading = computed(() => {
+  return fileStore.saveLoading;
+});
+// mounted
+onMounted(() => {
+  ipc.on(EVENTS.REPLY_SAVE_FILE, (filepath) => {
+    window.$message.success(`导出成功: ${filepath}`);
+  });
+  ipc.on(EVENTS.REPLY_OPEN_IMPORT_FILE, (obj: ImportData) => {
+    db.open().then(() => {
+      const idbDatabase = db.backendDB();
+      IDBExportImport.clearDatabase(idbDatabase, (err) => {
+        if (!err) {
+          // cleared data successfully
+          IDBExportImport.importFromJsonString(idbDatabase, obj.data, (err) => {
+            if (!err) {
+              window.$message.success("导入成功, 请重新进入");
+            }
+          });
+        }
+      });
+    });
+  });
+});
 // methods
 const handleAdd = () => {
   ConfigModalRef.value.open();
+};
+const handleImport = () => {
+  fileStore.importFileDialog(nanoid());
+};
+const handleExport = () => {
+  db.open().then(() => {
+    const idbDatabase = db.backendDB();
+    IDBExportImport.exportToJsonString(idbDatabase, (err, jsonString) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Exported as JSON: " + jsonString);
+        const filename = `media-srt-${+dayjs()}.json`;
+        fileStore.saveFileDialog("导出数据", filename, JSON.parse(jsonString));
+      }
+    });
+  });
 };
 </script>
 <style lang="css" scoped>

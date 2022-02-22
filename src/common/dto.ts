@@ -64,3 +64,13 @@ export class RecAudio implements RecAudioData {
     }
   }
 }
+
+export class ImportJson implements ImportData {
+  id: string = "";
+  data: IObj = {};
+  constructor(obj: Partial<ImportData>) {
+    if (obj) {
+      Object.assign(this, mergeProperties(this, obj));
+    }
+  }
+}

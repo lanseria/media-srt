@@ -11,6 +11,10 @@ declare interface UploadMediaData {
   finished: boolean;
   msg: string;
 }
+declare interface ImportData {
+  id: string;
+  data: string;
+}
 
 declare interface RecAudioData {
   id: number;

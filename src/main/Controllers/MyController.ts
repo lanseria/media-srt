@@ -5,11 +5,12 @@ import { FileService } from "@main/Services/FileService";
 import { Ffmpeg } from "@main/utils/ffmpeg";
 import { imageToBase64 } from "@main/utils/image";
 import * as mockjs from "mockjs";
-import { RecAudio, UploadMedia } from "@common/dto";
+import { ImportJson, RecAudio, UploadMedia } from "@common/dto";
 import { IConfig, ITransfy } from "@render/db";
 import { readFileRetBufedFile } from "@main/utils/cos";
 import { TencentService } from "@main/Services/TencentServie";
 import { RecOpt } from "@main/utils/rec";
+import { readFile, writeJson } from "@main/utils/fs";
 
 @Controller()
 export class MyController {
@@ -24,8 +25,18 @@ export class MyController {
   public replyRecAudio(id: number, data: IObj): RecAudioData {
     const recData = { id, ...data };
     const newRecAudio = new RecAudio(recData);
-    console.log(newRecAudio);
     return newRecAudio;
+  }
+
+  @IpcOn(EVENTS.REPLY_SAVE_FILE)
+  public replySaveFile(filepath: string) {
+    return filepath;
+  }
+
+  @IpcOn(EVENTS.REPLY_OPEN_IMPORT_FILE)
+  public replyOpenImportFile(data: Partial<ImportData>) {
+    const importData = new ImportJson(data);
+    return importData;
   }
 
   // IpcInvoke
@@ -166,6 +177,53 @@ export class MyController {
       reply({
         msg: error,
       });
+    }
+  }
+
+  @IpcInvoke(EVENTS.SAVE_FILE)
+  public async handleSaveFile({
+    title,
+    path,
+    data,
+  }: {
+    title: string;
+    path: string;
+    data: IObj;
+  }) {
+    this.fileService.onSaveFile(title, path).then((file) => {
+      if (!file.canceled) {
+        const filepath = file.filePath!.toString();
+        // Creating and Writing to the sample.json file
+        writeJson(filepath, data)
+          .then(() => {
+            this.replySaveFile(filepath);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  }
+
+  @IpcInvoke(EVENTS.OPEN_IMPORT_FILE)
+  public async handleOpenImportFile(id: string) {
+    try {
+      const fileObj = await this.fileService.onOpenJsonFile();
+      if (fileObj.canceled || fileObj.filePaths.length === 0) {
+        this.replyOpenImportFile({
+          id,
+        });
+      } else {
+        const data = await readFile(fileObj.filePaths[0], {
+          encoding: "utf-8",
+        });
+        this.replyOpenImportFile({
+          id,
+          data,
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
     }
   }
 }

@@ -39,8 +39,6 @@ import { useFileStore } from "@render/store/modules/file";
 import { useIpc } from "@render/plugins/ipc";
 import { EVENTS } from "@common/events";
 
-const ipc = useIpc();
-
 const props = defineProps({
   category: {
     type: String,
@@ -59,6 +57,8 @@ const props = defineProps({
     required: true,
   },
 });
+// useIpc
+const ipc = useIpc();
 // store
 const fileStore = useFileStore();
 // let
@@ -76,56 +76,19 @@ onMounted(() => {
   console.log("onMounted");
   ipc.on(EVENTS.REPLY_OPEN_FILE, (data: UploadMediaData) => {
     fileStore.overrideUploadMediaData(data);
-  });
-  fileStore.$onAction(
-    ({
-      name, // name of the action
-      store, // store instance, same as `someStore`
-      args, // array of parameters passed to the action
-      after, // hook after the action returns or resolves
-      onError, // hook if the action throws or rejects
-    }) => {
-      // a shared variable for this specific action call
-      const startTime = Date.now();
-      // this will trigger before an action on `store` is executed
-      console.log(`Start "${name}" with params [${args.join(", ")}].`);
-
-      // this will trigger if the action succeeds and after it has fully run.
-      // it waits for any returned promised
-      after((result) => {
-        if (name === "overrideUploadMediaData") {
-          const data = store.uploadMediaData;
-          if (data) {
-            processStatus.finished = data.finished;
-            if (data.finished) {
-              category.value = data.category;
-              rawPath.value = data.rawPath;
-              audioPath.value = data.audioPath;
-              poster.value = data.poster;
-              btnDisabled.value = false;
-            } else {
-              processStatus.msg = data.msg;
-              processStatus.step = data.step;
-              processStatus.totalStep = data.totalStep;
-            }
-          }
-        }
-        console.log(
-          `Finished "${name}" after ${
-            Date.now() - startTime
-          }ms.\nResult: ${result}.`
-        );
-      });
-      // this will trigger if the action throws or returns a promise that rejects
-      onError((error) => {
-        console.warn(
-          `Failed "${name}" after ${
-            Date.now() - startTime
-          }ms.\nError: ${error}.`
-        );
-      });
+    processStatus.finished = data.finished;
+    if (data.finished) {
+      category.value = data.category;
+      rawPath.value = data.rawPath;
+      audioPath.value = data.audioPath;
+      poster.value = data.poster;
+      btnDisabled.value = false;
+    } else {
+      processStatus.msg = data.msg;
+      processStatus.step = data.step;
+      processStatus.totalStep = data.totalStep;
     }
-  );
+  });
 });
 const handleOpenFile = () => {
   uploadId = nanoid();
