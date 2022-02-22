@@ -7,7 +7,37 @@
 - 使用腾讯云识别 API 请得到相关配置
 - 使用外置 ffmpeg 与 ffprobe 请配置好全局命令
 
-## template by⚡Vite + Electron & Esbuild Template
+## Global npmrc config for china
+
+```.npmrc
+ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/v
+ELECTRON_BUILDER_BINARIES_MIRROR=http://npm.taobao.org/mirrors/electron-builder-binaries/
+```
+
+## 开发使用
+
+```sh
+# 安装包
+yarn install
+
+# 使用开发
+yarn dev
+
+# 打包发布
+yarn build
+```
+
+## 开发过程
+
+[​DOING: 视频字幕识别与分割 ​](https://enjqkboeqf.feishu.cn/mindnotes/bmncnxAjFhPov4m0UISK01EMJAh)
+
+## 截图
+
+![](./doc/tencent-config.png)
+![](./doc/upload-media.png)
+![](./doc/split-srt.png)
+
+## Template by⚡Vite + Electron & Esbuild Template
 
 This template is used to build vite + electron projects.
 
@@ -43,10 +73,3 @@ My blog post:
 
 - [极速 DX Vite + Electron + esbuild](https://archergu.me/posts/vite-electron-esbuild)
 - [用装饰器给 Electron 提供一个基础 API 框架](https://archergu.me/posts/electron-decorators)
-
-### global npmrc config for china
-
-```.npmrc
-ELECTRON_MIRROR=https://npm.taobao.org/mirrors/electron/v
-ELECTRON_BUILDER_BINARIES_MIRROR=http://npm.taobao.org/mirrors/electron-builder-binaries/
-```
