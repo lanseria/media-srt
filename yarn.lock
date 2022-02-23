@@ -2133,9 +2133,9 @@ fresh@0.5.2:
   integrity sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==
 
 fs-extra@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.npmmirror.com/fs-extra/-/fs-extra-10.0.0.tgz#9ff61b655dde53fb34a82df84bb214ce802e17c1"
-  integrity sha512-C5owb14u9eJwizKGdchcDUQeFtlSHHthBk8pbX9Vc1PFZrLombudjDnNns88aYslCyF6IY5SUw3Roz6xShcEIQ==
+  version "10.0.1"
+  resolved "https://registry.npmmirror.com/fs-extra/-/fs-extra-10.0.1.tgz#27de43b4320e833f6867cc044bfce29fdf0ef3b8"
+  integrity sha512-NbdoVMZso2Lsrn/QwLXOy6rm0ufY2zEOKCDzJR/0kBsb0E6qed0P3iYK+Ath3BfvXEeu4JhEtXLgILx5psUfag==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
@@ -2960,9 +2960,9 @@ ms@2.1.3:
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
 naive-ui@^2.25.2:
-  version "2.25.2"
-  resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.25.2.tgz#e2f7bc5e11882a7c14a5c67dd175838e58749ec8"
-  integrity sha512-Jv/hMVHECh1Q7lPtIkGIa+eQVwFpQs6qEAn3r+eaEGmSuTAFJOrIKRL4ob10O5jQ1BxjLyWb+kzSxuwoi/VHWg==
+  version "2.25.3"
+  resolved "https://registry.npmmirror.com/naive-ui/-/naive-ui-2.25.3.tgz#4ece4dd9504bc4c625cdb84f563f6748bcac912a"
+  integrity sha512-gSMJbA7MZMxlewRffkGRhlC2aMcGo2YaXZl+EyNAlPlD3oa3thqNnWEq8Dr8BtxUwd1wJskft56nfV+H11e/dw==
   dependencies:
     "@css-render/plugin-bem" "^0.15.8"
     "@css-render/vue3-ssr" "^0.15.8"
@@ -2981,7 +2981,7 @@ naive-ui@^2.25.2:
     vdirs "^0.1.7"
     vfonts "^0.0.3"
     vooks "^0.2.12"
-    vueuc "^0.4.25"
+    vueuc "^0.4.26"
 
 nanoid@^3.2.0, nanoid@^3.3.1:
   version "3.3.1"
@@ -3571,9 +3571,9 @@ roarr@^2.15.3:
     sprintf-js "^1.1.2"
 
 rollup@^2.59.0:
-  version "2.67.3"
-  resolved "https://registry.npmmirror.com/rollup/-/rollup-2.67.3.tgz#3f04391fc296f807d067c9081d173e0a33dbd37e"
-  integrity sha512-G/x1vUwbGtP6O5ZM8/sWr8+p7YfZhI18pPqMRtMYMWSbHjKZ/ajHGiM+GWNTlWyOR0EHIdT8LHU+Z4ciIZ1oBw==
+  version "2.68.0"
+  resolved "https://registry.npmmirror.com/rollup/-/rollup-2.68.0.tgz#6ccabfd649447f8f21d62bf41662e5caece3bd66"
+  integrity sha512-XrMKOYK7oQcTio4wyTz466mucnd8LzkiZLozZ4Rz0zQD+HeX4nUK4B8GrTX/2EvN2/vBF/i2WnaXboPxo0JylA==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -3866,9 +3866,9 @@ temp-file@^3.4.0:
     fs-extra "^10.0.0"
 
 tencentcloud-sdk-nodejs@^4.0.291:
-  version "4.0.293"
-  resolved "https://registry.npmmirror.com/tencentcloud-sdk-nodejs/-/tencentcloud-sdk-nodejs-4.0.293.tgz#af1475523859bfc344e4e5ac55d7a343bb6a27a0"
-  integrity sha512-WOWsXjA0GH/UpIkIGofJ6tWYdc2bDu3p7e+0/v09IIavdRww/G/XY1uDvdjy5qK0oQjkMWyxDrzfCaLXtZvYiA==
+  version "4.0.294"
+  resolved "https://registry.npmmirror.com/tencentcloud-sdk-nodejs/-/tencentcloud-sdk-nodejs-4.0.294.tgz#7a7e847429af864cfb158aa6336f8ebe746e0752"
+  integrity sha512-zjXUlSKz69F7sao/l0OvYOdyTeCgv9jCY2PnS4jJ3sjSvXiBWZSwSwlAAUIMrRFmqERD33E7GQFkCM6N9rBWXg==
   dependencies:
     form-data "^3.0.0"
     get-stream "^6.0.0"
@@ -4218,14 +4218,14 @@ vscode-css-languageservice@^5.1.7:
     vscode-uri "^3.0.2"
 
 vscode-html-languageservice@^4.1.0:
-  version "4.2.1"
-  resolved "https://registry.npmmirror.com/vscode-html-languageservice/-/vscode-html-languageservice-4.2.1.tgz#b95077cffd19bf187e53c7bf79e3e0dd7edbc7cf"
-  integrity sha512-PgaToZVXJ44nFWEBuSINdDgVV6EnpC3MnXBsysR3O5TKcAfywbYeRGRy+Y4dVR7YeUgDvtb+JkJoSkaYC0mxXQ==
+  version "4.2.2"
+  resolved "https://registry.npmmirror.com/vscode-html-languageservice/-/vscode-html-languageservice-4.2.2.tgz#e580b8f22b1b8c1dc0d6aaeda5a861f8b4120e4e"
+  integrity sha512-4ICwlpplGbiNQq6D/LZr4qLbPZuMmnSQeX/57UAYP7jD1LOvKeru4lVI+f6d6Eyd7uS46nLJ5DUY4AAlq35C0g==
   dependencies:
-    vscode-languageserver-textdocument "^1.0.1"
+    vscode-languageserver-textdocument "^1.0.3"
     vscode-languageserver-types "^3.16.0"
     vscode-nls "^5.0.0"
-    vscode-uri "^3.0.2"
+    vscode-uri "^3.0.3"
 
 vscode-json-languageservice@^4.1.8:
   version "4.2.0"
@@ -4367,7 +4367,7 @@ vue@^3.2.31:
     "@vue/server-renderer" "3.2.31"
     "@vue/shared" "3.2.31"
 
-vueuc@^0.4.25:
+vueuc@^0.4.26:
   version "0.4.26"
   resolved "https://registry.npmmirror.com/vueuc/-/vueuc-0.4.26.tgz#7196c260d871120576048668c1d81efe716b0458"
   integrity sha512-IK6TV4468k7Hpj1SXXPYelT/aYqmfa/SYTLFospwJ/uMebRExS1fh5tx6ZT3fSA0OkmCOHmmi2OGke+eSseAgw==
