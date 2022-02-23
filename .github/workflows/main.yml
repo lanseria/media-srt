@@ -44,27 +44,16 @@ jobs:
           yarn install --frozen-lockfile
 
       # step4: build app for mac/win/ubuntu
-      - name: build windows app
+      - name: build desktop app
         run: |
           yarn build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # step5: cleanup artifacts in dist/electron
-      - name: cleanup artifacts for windows
-        if: matrix.os == 'windows-latest'
+      - name: cleanup artifacts for macos/ubuntu/windows
         run: |
-          npx rimraf "dist/electron/!(*.exe)"
-
-      - name: cleanup artifacts for ubuntu
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          npx rimraf "dist/electron/!(*.deb)"
-
-      - name: cleanup artifacts for macos
-        if: matrix.os == 'macos-latest'
-        run: |
-          npx rimraf "dist/electron/!(*.dmg)"
+          npx rimraf "dist/electron/!(*.dmg|*.deb|*.exe)"
 
       # step6: upload artifacts
       - name: upload artifacts
