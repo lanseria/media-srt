@@ -1,7 +1,7 @@
 # main.yml
 
 # Workflow's name
-name: Build Electron App For Win/Mac
+name: Build Electron App For Win/Mac/Ubuntu
 
 # Workflow's trigger
 on:
@@ -33,25 +33,20 @@ jobs:
 
       # step2: install node env
       - name: Install Node.js
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: "yarn"
 
-      # step3: npm install
-      - name: npm install
+      # step3: yarn install
+      - name: yarn install
         run: |
-          npm install
+          yarn install --frozen-lockfile
 
-      # step4: build app for mac/win
+      # step4: build app for mac/win/ubuntu
       - name: build windows app
-        if: matrix.os == 'windows-latest'
         run: |
-          npm run build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: build mac app
-        if: matrix.os == 'macos-latest'
-        run: |
-          npm run build
+          yarn build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -61,7 +56,12 @@ jobs:
         run: |
           npx rimraf "dist/electron/!(*.exe)"
 
-      - name: cleanup artifacts for macosZ
+      - name: cleanup artifacts for ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          npx rimraf "dist/electron/!(*.deb)"
+
+      - name: cleanup artifacts for macos
         if: matrix.os == 'macos-latest'
         run: |
           npx rimraf "dist/electron/!(*.dmg)"
