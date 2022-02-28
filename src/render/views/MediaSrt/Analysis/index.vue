@@ -30,7 +30,7 @@
         <video
           v-if="transfyDto.rawPath"
           id="MediaRef"
-          :src="`http://localhost:6789/video?video=${encodeURIComponent(
+          :src="`http://localhost:${vPort}/video?video=${encodeURIComponent(
             transfyDto.rawPath
           )}`"
           controls
@@ -76,6 +76,8 @@ const transfyStore = useTransfyStore();
 const { route, goBack } = useImpRoute();
 // ref
 const transfyDto = ref(new TransfyDTO());
+// global
+const vPort = process.env.VPORT;
 // computed
 const id = computed(() => {
   return route.params.id as string;

@@ -47,7 +47,7 @@ const { log } = require("console");
     }
   });
 
-  app.listen(6789, () => {
+  app.listen(process.env.VPORT, () => {
     console.log("video server run on http://localhost:3333/");
   });
 })();
