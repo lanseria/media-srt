@@ -11,6 +11,7 @@
     "build:vite": "vite build",
     "build:main": "rimraf dist/main && node -r ts-node/register script/build.main --env=production",
     "build": "npm run build:vite && npm run build:main && electron-builder --config electron-builder.config.js",
+    "build:github": "npm run build:vite && npm run build:main && electron-builder",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },

@@ -46,7 +46,7 @@ jobs:
       # step4: build app for mac/win/ubuntu
       - name: build desktop app
         run: |
-          yarn build
+          yarn build:github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
