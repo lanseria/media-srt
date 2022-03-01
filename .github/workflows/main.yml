@@ -52,12 +52,23 @@ jobs:
 
       - name: ls desktop app
         run: |
-          ls dist/
+          ls dist/electron/
 
       # step5: cleanup artifacts in dist/electron
-      - name: cleanup artifacts for macos/ubuntu/windows
+      - name: cleanup artifacts for windows
+        if: matrix.os == 'windows-latest'
         run: |
-          npx rimraf "dist/electron/!(*.dmg|*.exe)"
+          npx rimraf "dist/electron/!(*.exe)"
+
+      - name: cleanup artifacts for ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          npx rimraf "dist/electron/!(*.deb)"
+
+      - name: cleanup artifacts for macos
+        if: matrix.os == 'macos-latest'
+        run: |
+          npx rimraf "dist/electron/!(*.dmg)"
 
       # step6: upload artifacts
       - name: upload artifacts
