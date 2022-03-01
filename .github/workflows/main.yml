@@ -50,10 +50,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: ls desktop app
+        run: |
+          ls dist/
+
       # step5: cleanup artifacts in dist/electron
       - name: cleanup artifacts for macos/ubuntu/windows
         run: |
-          npx rimraf "dist/electron/!(*.dmg|*.deb|*.exe)"
+          npx rimraf "dist/electron/!(*.dmg|*.exe)"
 
       # step6: upload artifacts
       - name: upload artifacts
