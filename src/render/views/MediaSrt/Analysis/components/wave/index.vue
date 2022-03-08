@@ -4,7 +4,7 @@
 </template>
 <script lang="ts" setup>
 import { RegionParams } from "wavesurfer.js/src/plugin/regions";
-import { onMounted, watchEffect, computed } from "vue";
+import { onMounted, watchEffect, computed, onUnmounted } from "vue";
 import { useTransfyStore } from "@render/store/modules/transfy";
 import { useThemeVars } from "naive-ui";
 const transfyStore = useTransfyStore();
@@ -23,23 +23,31 @@ const regions = computed(() => {
   });
 });
 onMounted(() => {
+  transfyStore.initWavesurfer()
   watchEffect(() => {
-    transfyStore.wavesurfer.setProgressColor(themeVars.value.infoColor);
-    transfyStore.wavesurfer.setWaveColor(themeVars.value.primaryColor);
-    if (transfyStore.wavesurferReady && transfyStore.subtitles.length) {
-      transfyStore.wavesurfer.clearRegions();
-      regions.value.forEach((opt) => {
-        transfyStore.wavesurfer.addRegion(opt);
-      });
+    if (transfyStore.wavesurfer) {
+      transfyStore.wavesurfer.setProgressColor(themeVars.value.infoColor);
+      transfyStore.wavesurfer.setWaveColor(themeVars.value.primaryColor);
+      if (transfyStore.wavesurferReady && transfyStore.subtitles.length) {
+        transfyStore.wavesurfer.clearRegions();
+        regions.value.forEach((opt) => {
+          transfyStore.wavesurfer && transfyStore.wavesurfer.addRegion(opt);
+        });
+      }
     }
   });
 });
+
 transfyStore.$subscribe((mutation, state) => {
-  if (!state.wavesurferLoading && state.videoLoaded && !state.wavesurferReady) {
-    console.log("wavesurfer loading");
-    transfyStore.$patch({
-      wavesurferLoading: true,
-    });
+  if (mutation.type === 'patch object') {
+    if (!state.wavesurferLoading && state.videoLoaded && !state.wavesurferReady) {
+      console.log("wavesurfer loading");
+      transfyStore.$patch(
+        (state) => {
+          state.wavesurferLoading = true;
+        }
+      );
+    }
   }
 });
 </script>

@@ -17,6 +17,7 @@ interface TransfyState {
   wavesurferContainer: string;
   wavesurferLoading: boolean;
   wavesurferReady: boolean;
+  wavesurfer: WaveSurfer | null;
 }
 
 export const useTransfyStore = defineStore({
@@ -30,12 +31,13 @@ export const useTransfyStore = defineStore({
     waveId: 0,
     wavesurferLoading: false,
     wavesurferReady: false,
+    wavesurfer: null,
   }),
-  getters: {
-    wavesurfer(state): WaveSurfer {
+  actions: {
+    initWavesurfer() {
       const themeVars = useThemeVars();
       const wavesurfer = WaveSurfer.create({
-        container: state.wavesurferContainer,
+        container: this.wavesurferContainer,
         backend: "MediaElement",
         height: 120,
         normalize: true,
@@ -96,17 +98,17 @@ export const useTransfyStore = defineStore({
           document.querySelector("#MediaRef") as HTMLMediaElement
         );
       }, 1000);
-      return wavesurfer;
+      this.wavesurfer = wavesurfer;
     },
-  },
-  actions: {
     async setMediaTime(ms: number, id: number) {
-      if (this.waveId !== id) {
-        const s = ms / 1000;
-        await this.wavesurfer.play(s);
-        this.wavesurfer.pause();
-        this.waveId = id;
-        window.$message.info(`跳转到 ${ms}ms`);
+      if (this.wavesurfer) {
+        if (this.waveId !== id) {
+          const s = ms / 1000;
+          await this.wavesurfer.play(s);
+          this.wavesurfer.pause();
+          this.waveId = id;
+          window.$message.info(`跳转到 ${ms}ms`);
+        }
       }
     },
     setSubtitlesFSentence(value: string, id: number) {
