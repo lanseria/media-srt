@@ -4,6 +4,7 @@
   "description": "Vite + Electron with esbuild, so fast! ⚡",
   "main": "dist/main/index.js",
   "scripts": {
+    "electron:generate-icons": "electron-icon-builder --input=./logo.png --output=build --flatten",
     "dev": "npm run dev:all",
     "dev:all": "concurrently -n=vite,main -c=#646cff,#74b1be \"npm run dev:vite\" \"npm run dev:main\"",
     "dev:vite": "vite",
@@ -55,6 +56,7 @@
     "dotenv": "^10.0.0",
     "electron": "^16.0.8",
     "electron-builder": "^22.14.13",
+    "electron-icon-builder": "^2.0.1",
     "esbuild": "^0.13.15",
     "minimist": "^1.2.5",
     "naive-ui": "^2.25.2",

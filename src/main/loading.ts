@@ -1,4 +1,5 @@
 import { BrowserWindow } from "electron";
+import * as path from "path";
 import which from "which";
 // @ts-ignore
 import loadinghtml from "./loading.html";
