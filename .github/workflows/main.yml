@@ -31,22 +31,25 @@ jobs:
       - name: Check out git repository
         uses: actions/checkout@v2
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+
       # step2: install node env
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
           node-version: "16"
-          cache: "yarn"
+          cache: "pnpm"
 
-      # step3: yarn install
-      - name: yarn install
+      # step3: pnpm install
+      - name: pnpm install
         run: |
-          yarn install --frozen-lockfile
+          pnpm install --frozen-lockfile
 
       # step4: build app for mac/win/ubuntu
       - name: build desktop app
         run: |
-          yarn build:github
+          pnpm build:github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
